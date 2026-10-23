@@ -6,7 +6,6 @@ Positionsgroesse und Risiko. Er handelt NICHT selbst.
 Aufruf:
     python alert_bot.py          normaler Lauf (alle paar Minuten per GitHub Actions)
     python alert_bot.py --test   sendet eine Testnachricht und prueft den Phemex-Zugriff
-    python alert_bot.py --loop 31   prueft 31 Minuten lang jede Minute
 
 Zugangsdaten kommen aus Umgebungsvariablen (GitHub Secrets):
     TELEGRAM_TOKEN, TELEGRAM_CHAT_ID
