@@ -1,0 +1,54 @@
+name: Sweep-Alarm
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Testnachricht senden (true/false)"
+        default: "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sweep-alarm
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Pakete installieren
+        run: pip install -r requirements.txt
+
+      - name: Alarm ausfuehren
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ github.event.inputs.test }}" = "true" ]; then
+            python alert_bot.py --test
+          else
+            python alert_bot.py --loop 31
+          fi
+
+      - name: Status speichern
+        if: always()
+        run: |
+          if [ -f state.json ] && [ -n "$(git status --porcelain state.json)" ]; then
+            git config user.name "sweep-alarm"
+            git config user.email "sweep-alarm@users.noreply.github.com"
+            git add state.json
+            git commit -m "state"
+            git push
+          fi
