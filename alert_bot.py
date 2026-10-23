@@ -27,6 +27,8 @@ import pandas as pd
 COINS = [
     "BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT", "BNB/USDT:USDT",
     "XRP/USDT:USDT", "DOGE/USDT:USDT", "AVAX/USDT:USDT", "LINK/USDT:USDT",
+    "ADA/USDT:USDT", "LTC/USDT:USDT", "DOT/USDT:USDT", "NEAR/USDT:USDT",
+    "SUI/USDT:USDT", "TRX/USDT:USDT", "UNI/USDT:USDT", "ATOM/USDT:USDT",
 ]
 CAPITAL = 400.0          # dein Kapital in USDT
 RISK_PCT = 0.5           # Risiko je Trade in % (erste 30 Trades: 0.5)
