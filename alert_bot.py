@@ -297,8 +297,25 @@ def run(exchange=None, send=send_telegram):
             print(f"{symbol}: Signal {s['side']} gesendet")
     save_state(state)
     print(f"Fertig. Gesendet: {sent}, Ladefehler: {errors}/{len(COINS)}")
-    if errors == len(COINS):
-        sys.exit(1)  # alles fehlgeschlagen -> GitHub zeigt rotes X
+    return sent, errors
+
+
+def loop(minutes, pause_s=60):
+    """Prueft eine Weile lang jede Minute. So kommt das Signal kurz nach dem
+    Kerzenschluss, auch wenn GitHub den Start des Laufs verzoegert."""
+    exchange = make_exchange()
+    end = time.time() + minutes * 60
+    n = 0
+    while True:
+        n += 1
+        print(f"--- Durchgang {n} ({datetime.now(timezone.utc):%H:%M:%S} UTC) ---")
+        try:
+            run(exchange)
+        except Exception as e:  # ein Fehler darf die Schleife nicht beenden
+            print(f"Fehler im Durchgang: {e}")
+        if time.time() + pause_s >= end:
+            break
+        time.sleep(pause_s)
 
 
 def test():
@@ -315,5 +332,9 @@ def test():
 if __name__ == "__main__":
     if "--test" in sys.argv:
         test()
+    elif "--loop" in sys.argv:
+        loop(float(sys.argv[sys.argv.index("--loop") + 1]))
     else:
-        run()
+        sent, errors = run()
+        if errors == len(COINS):
+            sys.exit(1)  # alles fehlgeschlagen -> GitHub zeigt rotes X
