@@ -2,7 +2,7 @@ name: Sweep-Alarm
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       test:
@@ -19,7 +19,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
@@ -37,12 +37,13 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [ "${{ github.event.inputs.test }}" = "true" ]; then
-            python alert_bot.py --test
+            python -u alert_bot.py --test
           else
-            python alert_bot.py
+            python -u alert_bot.py --loop 28
           fi
 
       - name: Status speichern
+        if: always()
         run: |
           if [ -f state.json ] && [ -n "$(git status --porcelain state.json)" ]; then
             git config user.name "sweep-alarm"
