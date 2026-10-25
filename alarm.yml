@@ -33,13 +33,9 @@ jobs:
 
       - name: Diagnose
         run: |
-          echo "Commit:"
           git log -1 --format="%h %s"
-          echo "Zeilen in alert_bot.py:"
           wc -l alert_bot.py
-          echo "Treffer fuer Durchgang:"
           grep -c "Durchgang" alert_bot.py || true
-          echo "Dateien:"
           ls
 
       - name: Alarm ausfuehren
