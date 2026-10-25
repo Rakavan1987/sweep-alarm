@@ -31,15 +31,28 @@ jobs:
       - name: Pakete installieren
         run: pip install -r requirements.txt
 
+      - name: Diagnose
+        run: |
+          echo "Commit:"
+          git log -1 --format="%h %s"
+          echo "Zeilen in alert_bot.py:"
+          wc -l alert_bot.py
+          echo "Treffer fuer Durchgang:"
+          grep -c "Durchgang" alert_bot.py || true
+          echo "Dateien:"
+          ls
+
       - name: Alarm ausfuehren
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [ "${{ github.event.inputs.test }}" = "true" ]; then
-            python alert_bot.py --test
+            echo "Modus: test"
+            python -u alert_bot.py --test
           else
-            python alert_bot.py --loop 31
+            echo "Modus: loop 31"
+            python -u alert_bot.py --loop 31
           fi
 
       - name: Status speichern
