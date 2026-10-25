@@ -43,7 +43,7 @@ MIN_RR = 1.0             # Ziel muss mindestens 1R entfernt sein
 MIN_SCORE = 3            # Qualitaet mindestens 3 von 5, sonst keine Nachricht
 MAX_FEE_SHARE = 30.0     # Gebuehren duerfen hoechstens 30 % des Risikos sein
 CHASE_R = 0.25           # nicht mehr einsteigen, wenn der Kurs mehr als 0.25R weggelaufen ist
-MAX_AGE_MIN = 12         # Signal nur melden, wenn die Bestaetigungskerze nicht aelter ist
+MAX_AGE_MIN = 4          # Signal nur melden, wenn die Bestaetigungskerze nicht aelter ist
 
 STATE_FILE = "state.json"
 TF_MIN = 5
