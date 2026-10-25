@@ -332,9 +332,11 @@ def test():
 if __name__ == "__main__":
     if "--test" in sys.argv:
         test()
-    elif "--loop" in sys.argv:
-        loop(float(sys.argv[sys.argv.index("--loop") + 1]))
-    else:
+    elif "--once" in sys.argv:
         sent, errors = run()
         if errors == len(COINS):
             sys.exit(1)  # alles fehlgeschlagen -> GitHub zeigt rotes X
+    elif "--loop" in sys.argv:
+        loop(float(sys.argv[sys.argv.index("--loop") + 1]))
+    else:
+        loop(28)  # Standard: 28 Minuten lang jede Minute pruefen
