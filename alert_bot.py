@@ -48,6 +48,24 @@ MAX_AGE_MIN = 4          # Signal nur melden, wenn die Bestaetigungskerze nicht 
 STATE_FILE = "state.json"
 TF_MIN = 5
 
+# Zaehler: warum wurde ein Sweep NICHT gemeldet (jeder Fall nur einmal gezaehlt)
+STATS = set()
+
+
+def note(symbol, side, ts, reason):
+    STATS.add((symbol, side, str(ts), reason))
+
+
+def print_stats():
+    from collections import Counter
+    c = Counter(r for (_, _, _, r) in STATS)
+    print("=== Filter-Statistik dieses Laufs ===")
+    if not c:
+        print("keine Sweep-Kandidaten gesehen")
+    for reason, n in sorted(c.items(), key=lambda x: -x[1]):
+        print(f"{n:4d}  {reason}")
+    STATS.clear()
+
 
 # ----------------------------------------------------------------------
 # DATEN
@@ -74,6 +92,8 @@ def add_indicators(df):
     df["upper_wick"] = (df["high"] - df[["open", "close"]].max(axis=1)) / rng
     df["sweep_depth_low"] = (df["swing_low"] - df["low"]) / df["swing_low"] * 100
     df["sweep_depth_high"] = (df["high"] - df["swing_high"]) / df["swing_high"] * 100
+    df["raw_long"] = (df["low"] < df["swing_low"]) & (df["sweep_depth_low"] >= SWEEP_MIN_PCT)
+    df["raw_short"] = (df["high"] > df["swing_high"]) & (df["sweep_depth_high"] >= SWEEP_MIN_PCT)
     df["long_sweep"] = (df["low"] < df["swing_low"]) & (df["sweep_depth_low"] >= SWEEP_MIN_PCT) \
         & (df["lower_wick"] >= WICK_MIN)
     df["short_sweep"] = (df["high"] > df["swing_high"]) & (df["sweep_depth_high"] >= SWEEP_MIN_PCT) \
@@ -120,10 +140,15 @@ def find_setups(df, symbol):
     for side in ("long", "short"):
         flag = "long_sweep" if side == "long" else "short_sweep"
         for s in range(max(SWING_LOOKBACK + 1, L - 2 - CONFIRM_WINDOW), L + 1):
+            sts = df.loc[s, "timestamp"]
             if not df.loc[s, flag]:
+                if df.loc[s, "raw_long" if side == "long" else "raw_short"]:
+                    note(symbol, side, sts, "Sweep ohne Lunte (Lunte < 60 %)")
                 continue
+            note(symbol, side, sts, "Sweep mit Lunte gefunden")
             extreme = float(df.loc[s, "low"] if side == "long" else df.loc[s, "high"])
             confirm = None
+            trend_blocked = False
             for c in range(s, min(s + CONFIRM_WINDOW, L) + 1):
                 if c > s:  # neues Extrem nach dem Sweep macht das Setup ungueltig
                     if side == "long" and df.loc[c, "low"] < extreme:
@@ -134,10 +159,17 @@ def find_setups(df, symbol):
                     else df.loc[c, "close"] < df.loc[c, "ema20"]
                 slope = df.loc[c, "htf_slope"]
                 trend_ok = np.isnan(slope) or (slope >= 0 if side == "long" else slope <= 0)
+                if ok and not trend_ok:
+                    trend_blocked = True
                 if ok and trend_ok:
                     confirm = c
                     break
-            if confirm is None or confirm < L - 2:
+            if confirm is None:
+                note(symbol, side, sts, "15m-Trend blockt" if trend_blocked
+                     else "kein Schluss ueber/unter EMA20 in 3 Kerzen")
+                continue
+            if confirm < L - 2:
+                note(symbol, side, sts, "Bestaetigung schon zu alt")
                 continue
 
             c = confirm
@@ -146,12 +178,14 @@ def find_setups(df, symbol):
             swing_level = df.loc[s, "swing_high"] if side == "long" else df.loc[s, "swing_low"]
             tp = compute_tp(entry, side, df.loc[c, "ema50"], df.loc[c, "ema200"], swing_level, sl)
             if tp is None:
+                note(symbol, side, sts, "kein Ziel mit CRV >= 1")
                 continue
             risk = abs(entry - sl)
             # Kurs darf seit der Bestaetigung nicht zu weit weggelaufen sein
             moved = (last_close - entry) if side == "long" else (entry - last_close)
             wrong_side = (last_close <= sl) if side == "long" else (last_close >= sl)
             if wrong_side or moved > CHASE_R * risk:
+                note(symbol, side, sts, "Kurs schon zu weit weggelaufen")
                 continue
 
             sl_pct = risk / entry * 100
@@ -166,7 +200,11 @@ def find_setups(df, symbol):
             strict_trend = (not np.isnan(slope)) and (slope > 0 if side == "long" else slope < 0)
             score = int(wick >= 0.7) + int(depth >= 0.10) + int(strict_trend) \
                 + int(rr >= 1.5) + int(fee_share <= 15)
-            if score < MIN_SCORE or fee_share > MAX_FEE_SHARE:
+            if fee_share > MAX_FEE_SHARE:
+                note(symbol, side, sts, "Gebuehren zu hoch (SL zu eng)")
+                continue
+            if score < MIN_SCORE:
+                note(symbol, side, sts, "Qualitaet unter 3 von 5")
                 continue
 
             max_chase = entry + CHASE_R * risk if side == "long" else entry - CHASE_R * risk
@@ -287,8 +325,12 @@ def run(exchange=None, send=send_telegram):
             key = f"{s['symbol']}|{s['side']}|{s['confirm_ts']}"
             age_min = (datetime.now(timezone.utc).replace(tzinfo=None)
                        - s["confirm_ts"].to_pydatetime()).total_seconds() / 60 - TF_MIN
-            if key in state or age_min > MAX_AGE_MIN:
+            if key in state:
                 continue
+            if age_min > MAX_AGE_MIN:
+                note(symbol, s["side"], s["confirm_ts"], "Signal schon zu alt")
+                continue
+            note(symbol, s["side"], s["confirm_ts"], "SIGNAL gesendet")
             if btc_note is None:
                 btc_note = btc_context(exchange)
             send(build_message(s, btc_note))
@@ -316,6 +358,7 @@ def loop(minutes, pause_s=60):
         if time.time() + pause_s >= end:
             break
         time.sleep(pause_s)
+    print_stats()
 
 
 def test():
@@ -334,6 +377,7 @@ if __name__ == "__main__":
         test()
     elif "--once" in sys.argv:
         sent, errors = run()
+        print_stats()
         if errors == len(COINS):
             sys.exit(1)  # alles fehlgeschlagen -> GitHub zeigt rotes X
     elif "--loop" in sys.argv:
