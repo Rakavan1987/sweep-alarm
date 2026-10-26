@@ -48,6 +48,11 @@ MAX_AGE_MIN = 4          # Signal nur melden, wenn die Bestaetigungskerze nicht 
 SWING15 = 10             # 15m-Sweep: letztes Hoch/Tief aus den letzten 10 Kerzen (15m)
 SWEEP15_MIN_PCT = 0.10   # 15m-Sweep mindestens 0.10 % ueber/unter dem Swing
 
+SHADOW_WICKS = (0.3, 0.4, 0.5)   # Schatten-Varianten mit kuerzerer Lunte (nur Auswertung, keine Nachricht)
+SHADOW_MAX_AGE_MIN = 12          # Schatten-Trade nur aufnehmen, wenn die Bestaetigung nicht aelter ist
+SHADOW_KEEP_DAYS = 14
+SUMMARY_EVERY_H = 22             # Schatten-Bilanz hoechstens alle 22 Stunden per Telegram
+
 STATE_FILE = "state.json"
 TF_MIN = 5
 
@@ -55,7 +60,12 @@ TF_MIN = 5
 STATS = set()
 
 
+_quiet = False  # waehrend der Schatten-Suche keine Statistik schreiben
+
+
 def note(symbol, side, ts, reason):
+    if _quiet:
+        return
     STATS.add((symbol, side, str(ts), reason))
 
 
@@ -411,10 +421,108 @@ def load_state():
 
 
 def save_state(state):
-    cutoff = (datetime.now(timezone.utc) - pd.Timedelta(days=3)).strftime("%Y-%m-%d %H:%M:%S")
-    state = {k: v for k, v in state.items() if v >= cutoff}
+    now = datetime.now(timezone.utc)
+    cutoff = (now - pd.Timedelta(days=3)).strftime("%Y-%m-%d %H:%M:%S")
+    cutoff_sh = (now - pd.Timedelta(days=SHADOW_KEEP_DAYS)).strftime("%Y-%m-%d %H:%M:%S")
+    out = {k: v for k, v in state.items()
+           if not k.startswith("__") and isinstance(v, str) and v >= cutoff}
+    if isinstance(state.get("__summary__"), str):
+        out["__summary__"] = state["__summary__"]
+    shadow = state.get("__shadow__") or {}
+    out["__shadow__"] = {k: r for k, r in shadow.items() if r.get("ts", "") >= cutoff_sh}
     with open(STATE_FILE, "w") as f:
-        json.dump(state, f, indent=1, sort_keys=True)
+        json.dump(out, f, indent=1, sort_keys=True)
+
+
+# ----------------------------------------------------------------------
+# SCHATTEN-TRACKER: Varianten still mitlaufen lassen und selbst auswerten
+# ----------------------------------------------------------------------
+def shadow_update(shadow, raw, df, symbol, live_setups):
+    """Neue Kandidaten aller Varianten merken und offene anhand der Kerzen auswerten."""
+    global _quiet, WICK_MIN
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    cands = [("15m" if x.get("kind") == "15m" else "w60", x) for x in live_setups]
+    _quiet = True
+    try:
+        for w in SHADOW_WICKS:
+            old = WICK_MIN
+            WICK_MIN = w
+            try:
+                dfw = add_htf_trend(add_indicators(raw))
+            finally:
+                WICK_MIN = old
+            for x in find_setups(dfw, symbol):
+                cands.append((f"w{int(round(w * 100))}", x))
+    finally:
+        _quiet = False
+    for variant, x in cands:
+        age = (now - x["confirm_ts"].to_pydatetime()).total_seconds() / 60 - TF_MIN
+        sid = f"{variant}|{symbol}|{x['side']}|{x['confirm_ts']}"
+        if age > SHADOW_MAX_AGE_MIN or sid in shadow:
+            continue
+        shadow[sid] = {"v": variant, "sym": symbol, "side": x["side"], "ts": str(x["confirm_ts"]),
+                       "entry": float(x["entry"]), "sl": float(x["sl"]), "tp": float(x["tp"]),
+                       "rr": float(x["rr"]), "fee_r": float(x["fee_share"]) / 100.0,
+                       "res": None, "r": 0.0}
+    # offene Trades dieses Coins auswerten (bei gleichzeitigem Treffer gilt SL)
+    for sid, r in shadow.items():
+        if r["res"] or r["sym"] != symbol:
+            continue
+        after = df[df["timestamp"] > pd.Timestamp(r["ts"])]
+        for _, c in after.iterrows():
+            if r["side"] == "long":
+                hit_sl, hit_tp = c["low"] <= r["sl"], c["high"] >= r["tp"]
+            else:
+                hit_sl, hit_tp = c["high"] >= r["sl"], c["low"] <= r["tp"]
+            if hit_sl:
+                r["res"], r["r"] = "SL", -1.0 - r["fee_r"]
+                break
+            if hit_tp:
+                r["res"], r["r"] = "TP", r["rr"] - r["fee_r"]
+                break
+        if not r["res"]:
+            if (now - pd.Timestamp(r["ts"]).to_pydatetime()).total_seconds() > 24 * 3600:
+                r["res"], r["r"] = "EXP", 0.0
+
+
+def shadow_table(shadow):
+    labels = [("w30", "Lunte>=30%"), ("w40", "Lunte>=40%"), ("w50", "Lunte>=50%"),
+              ("w60", "Lunte>=60% (live)"), ("15m", "15m-Sweep (live)")]
+    lines = []
+    for key, label in labels:
+        items = [r for r in shadow.values() if r["v"] == key]
+        tp = sum(r["res"] == "TP" for r in items)
+        sl = sum(r["res"] == "SL" for r in items)
+        offen = sum(r["res"] is None for r in items)
+        done = tp + sl
+        wr = f"{tp / done * 100:.0f}%" if done else "-"
+        total = sum(r["r"] for r in items if r["res"] in ("TP", "SL"))
+        lines.append(f"{label:<19} Trades {len(items):3d} | TP {tp:3d} SL {sl:3d} offen {offen:2d} | "
+                     f"Treffer {wr:>4} | netto {total:+.1f} R")
+    return "\n".join(lines)
+
+
+def print_shadow(shadow):
+    print("=== Schatten-Bilanz (nur Auswertung, nicht gehandelt; R = Vielfaches des Risikos, nach Gebuehren) ===")
+    print(shadow_table(shadow))
+
+
+def maybe_send_summary(send=send_telegram):
+    st = load_state()
+    shadow = st.get("__shadow__") or {}
+    if not any(r.get("res") in ("TP", "SL") for r in shadow.values()):
+        return
+    now = datetime.now(timezone.utc)
+    last = st.get("__summary__")
+    if isinstance(last, str) and last >= (now - pd.Timedelta(hours=SUMMARY_EVERY_H)).strftime("%Y-%m-%d %H:%M:%S"):
+        return
+    try:
+        send("📊 Schatten-Bilanz (nicht gehandelte Varianten, netto nach Gebuehren)\n" + shadow_table(shadow)
+             + "\n\nR = Vielfaches des Risikos. Wenig Trades = noch nicht aussagekraeftig.")
+        st["__summary__"] = now.strftime("%Y-%m-%d %H:%M:%S")
+        save_state(st)
+    except Exception as e:
+        print(f"Bilanz-Nachricht fehlgeschlagen: {e}")
 
 
 # ----------------------------------------------------------------------
@@ -428,11 +536,13 @@ def make_exchange():
 def run(exchange=None, send=send_telegram):
     exchange = exchange or make_exchange()
     state = load_state()
+    shadow = state.get("__shadow__") or {}
     btc_note = None
     errors, sent = 0, 0
     for symbol in COINS:
         try:
-            df = add_htf_trend(add_indicators(fetch_5m(exchange, symbol)))
+            raw = fetch_5m(exchange, symbol)
+            df = add_htf_trend(add_indicators(raw))
         except Exception as e:
             errors += 1
             print(f"{symbol}: Fehler beim Laden: {e}")
@@ -443,6 +553,10 @@ def run(exchange=None, send=send_telegram):
             setups += [x for x in find_setups_15m(df, symbol) if (x["side"], x["confirm_ts"]) not in seen]
         except Exception as e:
             print(f"{symbol}: Fehler bei der 15m-Suche: {e}")
+        try:  # der Schatten-Tracker darf den Alarm nie stoeren
+            shadow_update(shadow, raw, df, symbol, setups)
+        except Exception as e:
+            print(f"{symbol}: Fehler im Schatten-Tracker: {e}")
         for s in setups:
             key = f"{s['symbol']}|{s['side']}|{s['confirm_ts']}" + ("|15m" if s.get("kind") == "15m" else "")
             age_min = (datetime.now(timezone.utc).replace(tzinfo=None)
@@ -459,6 +573,7 @@ def run(exchange=None, send=send_telegram):
             state[key] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
             sent += 1
             print(f"{symbol}: Signal {s['side']} gesendet")
+    state["__shadow__"] = shadow
     save_state(state)
     print(f"Fertig. Gesendet: {sent}, Ladefehler: {errors}/{len(COINS)}")
     return sent, errors
@@ -481,6 +596,11 @@ def loop(minutes, pause_s=60):
             break
         time.sleep(pause_s)
     print_stats()
+    try:
+        print_shadow(load_state().get("__shadow__") or {})
+        maybe_send_summary()
+    except Exception as e:
+        print(f"Bilanz-Fehler: {e}")
 
 
 def test():
