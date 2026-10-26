@@ -39,7 +39,9 @@ FEE_PCT = 0.06           # Gebuehr je Seite in %
 
 SWING_LOOKBACK = 15      # letzte Hoch/Tief aus den letzten 15 Kerzen (5m)
 SWEEP_MIN_PCT = 0.05     # Sweep mindestens 0.05 % ueber/unter dem Swing
-WICK_MIN = 0.6           # Lunte mindestens 60 % der Kerzenspanne
+WICK_MIN = 0.4           # Lunte mindestens 40 % -> Setup wird gemeldet
+A_WICK = 0.6             # ab 60 % Lunte = A-Setup (volles Risiko), 40-60 % = B-Setup (halbes Risiko)
+B_RISK_FACTOR = 0.5      # B-Setups: nur halbes Risiko
 SL_BUFFER_PCT = 0.05     # SL-Puffer hinter dem Sweep-Extrem
 CONFIRM_WINDOW = 3       # Schluss ueber/unter EMA20 darf bis zu 3 Kerzen nach dem Sweep kommen
 MIN_RR = 1.0             # Ziel muss mindestens 1R entfernt sein
@@ -164,7 +166,7 @@ def find_setups(df, symbol):
             sts = df.loc[s, "timestamp"]
             if not df.loc[s, flag]:
                 if df.loc[s, "raw_long" if side == "long" else "raw_short"]:
-                    note(symbol, side, sts, "Sweep ohne Lunte (Lunte < 60 %)")
+                    note(symbol, side, sts, f"Sweep ohne Lunte (Lunte < {WICK_MIN*100:.0f} %)")
                 continue
             note(symbol, side, sts, "Sweep mit Lunte gefunden")
             extreme = float(df.loc[s, "low"] if side == "long" else df.loc[s, "high"])
@@ -216,6 +218,11 @@ def find_setups(df, symbol):
             fee_share = fee_usd / risk_usd * 100
             rr = abs(tp - entry) / risk
             wick = float(df.loc[s, "lower_wick" if side == "long" else "upper_wick"])
+            grade = "A" if wick >= A_WICK else "B"
+            if grade == "B":
+                risk_usd *= B_RISK_FACTOR
+                size *= B_RISK_FACTOR
+                fee_usd *= B_RISK_FACTOR
             depth = float(df.loc[s, "sweep_depth_low" if side == "long" else "sweep_depth_high"])
             slope = df.loc[c, "htf_slope"]
             strict_trend = (not np.isnan(slope)) and (slope > 0 if side == "long" else slope < 0)
@@ -233,7 +240,7 @@ def find_setups(df, symbol):
                 "symbol": symbol, "side": side, "confirm_ts": df.loc[c, "timestamp"],
                 "entry": entry, "sl": sl, "tp": tp, "max_chase": max_chase,
                 "sl_pct": sl_pct, "rr": rr, "size": size, "risk_usd": risk_usd,
-                "fee_usd": fee_usd, "fee_share": fee_share, "score": score,
+                "fee_usd": fee_usd, "fee_share": fee_share, "score": score, "grade": grade,
                 "wick": wick, "depth": depth, "trend": "mit dem 15m-Trend" if strict_trend else "15m-Trend flach",
                 "last_close": last_close,
             })
@@ -323,6 +330,11 @@ def find_setups_15m(df, symbol):
             fee_share = fee_usd / risk_usd * 100
             rr = abs(tp - entry) / risk
             wick = float(row["lower_wick" if side == "long" else "upper_wick"])
+            grade = "A" if wick >= A_WICK else "B"
+            if grade == "B":
+                risk_usd *= B_RISK_FACTOR
+                size *= B_RISK_FACTOR
+                fee_usd *= B_RISK_FACTOR
             depth = float(row["depth_low" if side == "long" else "depth_high"])
             slope = df.loc[c, "htf_slope"]
             strict_trend = (not np.isnan(slope)) and (slope > 0 if side == "long" else slope < 0)
@@ -339,7 +351,7 @@ def find_setups_15m(df, symbol):
                 "symbol": symbol, "side": side, "confirm_ts": df.loc[c, "timestamp"], "kind": "15m",
                 "entry": entry, "sl": sl, "tp": tp, "max_chase": max_chase,
                 "sl_pct": sl_pct, "rr": rr, "size": size, "risk_usd": risk_usd,
-                "fee_usd": fee_usd, "fee_share": fee_share, "score": score,
+                "fee_usd": fee_usd, "fee_share": fee_share, "score": score, "grade": grade,
                 "wick": wick, "depth": depth,
                 "trend": "mit dem 15m-Trend" if strict_trend else "gegen/neutral zum 15m-Trend",
                 "last_close": last_close,
@@ -372,6 +384,7 @@ def build_message(s, btc_note):
     tp_gain = s["risk_usd"] * s["rr"]
     lines = [
         f"{'🧪 15m-SWEEP (neu, ungetestet)' + chr(10) if s.get('kind') == '15m' else ''}"
+        f"{'⚠️ B-SETUP: Lunte nur ' + format(s['wick']*100, '.0f') + ' % - nur HALBES Risiko, Vorsicht' + chr(10) if s.get('grade') == 'B' else ''}"
         f"{arrow} {coin}USDT   Qualitaet {stars} ({s['score']}/5)",
         f"Kerze geschlossen vor ca. {max(0, round(age))} Min",
         "",
@@ -381,7 +394,7 @@ def build_message(s, btc_note):
         f"Nicht mehr einsteigen {'ueber' if s['side']=='long' else 'unter'} {price_fmt(s['max_chase'])}",
         "",
         f"Positionsgroesse: {s['size']:.0f} USDT",
-        f"Risiko: {s['risk_usd']:.2f} USDT ({RISK_PCT} %)  |  Gewinn bei TP: ca. +{tp_gain:.2f} USDT",
+        f"Risiko: {s['risk_usd']:.2f} USDT ({s['risk_usd']/CAPITAL*100:.2f} %)  |  Gewinn bei TP: ca. +{tp_gain:.2f} USDT",
         f"Hebel: {lev_txt}  |  Gebuehren: ca. {s['fee_usd']:.2f} USDT",
         "",
         f"Sweep-Lunte {s['wick']*100:.0f} %, Sweep-Tiefe {s['depth']:.2f} %, {s['trend']}",
@@ -444,7 +457,8 @@ def shadow_update(shadow, raw, df, symbol, live_setups):
     """Neue Kandidaten aller Varianten merken und offene anhand der Kerzen auswerten."""
     global _quiet, WICK_MIN
     now = datetime.now(timezone.utc).replace(tzinfo=None)
-    cands = [("15m" if x.get("kind") == "15m" else "w60", x) for x in live_setups]
+    cands = [("15m" if x.get("kind") == "15m" else "w60", x) for x in live_setups
+             if x.get("kind") == "15m" or x.get("grade", "A") == "A"]
     _quiet = True
     try:
         for w in SHADOW_WICKS:
