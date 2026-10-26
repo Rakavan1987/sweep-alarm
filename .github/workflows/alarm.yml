@@ -19,7 +19,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
 
@@ -39,7 +39,7 @@ jobs:
           if [ "${{ github.event.inputs.test }}" = "true" ]; then
             python -u alert_bot.py --test
           else
-            python -u alert_bot.py --loop 28
+            python -u alert_bot.py --loop 330
           fi
 
       - name: Status speichern
