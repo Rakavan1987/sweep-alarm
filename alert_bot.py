@@ -31,7 +31,8 @@ COINS = [
     "SUI/USDT:USDT", "TRX/USDT:USDT", "UNI/USDT:USDT", "ATOM/USDT:USDT",
     # neu dazu (was es auf Phemex nicht gibt, wird beim Start automatisch uebersprungen)
     "XLM/USDT:USDT", "BCH/USDT:USDT", "ETC/USDT:USDT", "AAVE/USDT:USDT", "HBAR/USDT:USDT",
-    "FIL/USDT:USDT", "ARB/USDT:USDT", "OP/USDT:USDT", "APT/USDT:USDT", "INJ/USDT:USDT",
+    "FIL/USDT:USDT", "ARB/USDT:USDT", "INJ/USDT:USDT",
+    "WLD/USDT:USDT", "TIA/USDT:USDT", "SEI/USDT:USDT", "RUNE/USDT:USDT", "ONDO/USDT:USDT", "ENA/USDT:USDT",
 ]
 CAPITAL = 400.0          # dein Kapital in USDT
 RISK_PCT = 0.5           # Risiko je Trade in % (erste 30 Trades: 0.5)
@@ -45,6 +46,7 @@ B_RISK_FACTOR = 0.5      # B-Setups: nur halbes Risiko
 SL_BUFFER_PCT = 0.05     # SL-Puffer hinter dem Sweep-Extrem
 CONFIRM_WINDOW = 3       # Schluss ueber/unter EMA20 darf bis zu 3 Kerzen nach dem Sweep kommen
 MIN_RR = 1.0             # Ziel muss mindestens 1R entfernt sein
+TREND_FILTER = True       # 15m-Trendfilter an (Schatten-Variante schaltet ihn aus)
 MIN_SCORE = 3            # Qualitaet mindestens 3 von 5, sonst keine Nachricht
 MAX_FEE_SHARE = 30.0     # Gebuehren duerfen hoechstens 30 % des Risikos sein
 CHASE_R = 0.25           # nicht mehr einsteigen, wenn der Kurs mehr als 0.25R weggelaufen ist
@@ -53,7 +55,15 @@ MAX_AGE_MIN = 4          # Signal nur melden, wenn die Bestaetigungskerze nicht 
 SWING15 = 10             # 15m-Sweep: letztes Hoch/Tief aus den letzten 10 Kerzen (15m)
 SWEEP15_MIN_PCT = 0.10   # 15m-Sweep mindestens 0.10 % ueber/unter dem Swing
 
-SHADOW_WICKS = (0.3, 0.4, 0.5)   # Schatten-Varianten mit kuerzerer Lunte (nur Auswertung, keine Nachricht)
+# Schatten-Varianten (nur Auswertung, keine Nachricht): jede lockert genau EINE Regel
+SHADOW_VARIANTS = [
+    ("w30", {"WICK_MIN": 0.3}),
+    ("w40", {"WICK_MIN": 0.4}),
+    ("w50", {"WICK_MIN": 0.5}),
+    ("notrend", {"TREND_FILTER": False}),
+    ("conf5", {"CONFIRM_WINDOW": 5}),
+    ("score2", {"MIN_SCORE": 2}),
+]
 SHADOW_MAX_AGE_MIN = 12          # Schatten-Trade nur aufnehmen, wenn die Bestaetigung nicht aelter ist
 SHADOW_KEEP_DAYS = 14
 SUMMARY_EVERY_H = 22             # Schatten-Bilanz hoechstens alle 22 Stunden per Telegram
@@ -74,19 +84,62 @@ def note(symbol, side, ts, reason):
     STATS.add((symbol, side, str(ts), reason))
 
 
+PRIORITY = [  # je Fall zaehlt nur das aussagekraeftigste Ergebnis
+    "SIGNAL gesendet", "Signal schon zu alt", "Kurs schon zu weit weggelaufen",
+    "kein Ziel mit CRV >= 1", "Gebuehren zu hoch (SL zu eng)", "Qualitaet unter 3 von 5",
+    "15m-Trend blockt", "kein Schluss", "Bestaetigung schon zu alt", "wartet auf Bestaetigung",
+    "Sweep mit Lunte gefunden", "Sweep ohne Lunte",
+]
+
+
+def _clean(reason):
+    kind = "15m" if (reason.startswith("15m-Sweep") or reason.startswith("15m:")) else "5m"
+    r = reason[4:].strip() if reason.startswith("15m:") else reason
+    if r.startswith("15m-Sweep mit Lunte"):
+        r = "Sweep mit Lunte gefunden"
+    if r.startswith("kein Schluss") or r.startswith("kein 5m-Schluss"):
+        r = "kein Schluss"
+    if r.startswith("Sweep ohne Lunte"):
+        r = "Sweep ohne Lunte"
+    return kind, r
+
+
+def final_cases():
+    cases = {}
+    for sym, side, ts, reason in STATS:
+        kind, r = _clean(reason)
+        cases.setdefault((kind, sym, side, ts), set()).add(r)
+    out = {}
+    for key, rs in cases.items():
+        out[key] = next((p for p in PRIORITY if p in rs), sorted(rs)[0])
+    return out
+
+
 def print_stats():
     from collections import Counter
-    c = Counter(r for (_, _, _, r) in STATS)
-    print("=== Filter-Statistik dieses Laufs ===")
-    if not c:
+    fin = final_cases()
+    sent = [k for k, r in fin.items() if r == "SIGNAL gesendet"]
+    fin = {k: ("alle Filter bestanden" if r == "Sweep mit Lunte gefunden" else r) for k, r in fin.items()
+           if r not in ("SIGNAL gesendet", "Signal schon zu alt")}
+    print("=== Filter-Statistik dieses Laufs (je Fall nur das Endergebnis) ===")
+    print(f"Signale gesendet: {len(sent)}")
+    if not fin:
         print("keine Sweep-Kandidaten gesehen")
-    for reason, n in sorted(c.items(), key=lambda x: -x[1]):
-        print(f"{n:4d}  {reason}")
-    # Einzelfaelle (UTC), damit man einen bestimmten Sweep nachschlagen kann
-    rows = sorted(STATS, key=lambda x: (x[2], x[0]))
-    print("--- Einzelfaelle (Zeit in UTC) ---")
-    for sym, side, ts, reason in rows[:120]:
-        print(f"{ts[5:16]}  {sym.split('/')[0]:<6} {side:<5} {reason}")
+    for kind, title in (("5m", "5m-Sweeps"), ("15m", "15m-Sweeps")):
+        c = Counter(r for (k, _, _, _), r in fin.items() if k == kind)
+        if not c:
+            continue
+        print(f"-- {title}: {sum(n for r, n in c.items() if r != 'Sweep ohne Lunte')} mit Lunte, "
+              f"{c.get('Sweep ohne Lunte', 0)} ohne Lunte --")
+        for reason, n in sorted(c.items(), key=lambda x: -x[1]):
+            if reason != "Sweep ohne Lunte":
+                print(f"{n:4d}  {reason}")
+    # Einzelfaelle (UTC) der Sweeps MIT Lunte, die juengsten zuletzt
+    rows = sorted(((ts, sym, side, kind, r) for (kind, sym, side, ts), r in fin.items()
+                   if r != "Sweep ohne Lunte"))
+    print("--- Einzelfaelle mit Lunte (Zeit in UTC, juengste 300) ---")
+    for ts, sym, side, kind, r in rows[-300:]:
+        print(f"{ts[5:16]}  {sym.split('/')[0]:<6} {side:<5} {'15m ' if kind == '15m' else '5m  '}{r}")
     STATS.clear()
 
 
@@ -110,6 +163,9 @@ def add_indicators(df):
     df["ema200"] = df["close"].ewm(span=200, adjust=False).mean()
     df["swing_high"] = df["high"].shift(1).rolling(SWING_LOOKBACK).max()
     df["swing_low"] = df["low"].shift(1).rolling(SWING_LOOKBACK).min()
+    for n in (30, 60):  # weiter entfernte Ziele, falls das naechste Ziel zu nah ist
+        df[f"swing_high{n}"] = df["high"].shift(1).rolling(n).max()
+        df[f"swing_low{n}"] = df["low"].shift(1).rolling(n).min()
     rng = (df["high"] - df["low"]).replace(0, np.nan)
     df["lower_wick"] = (df[["open", "close"]].min(axis=1) - df["low"]) / rng
     df["upper_wick"] = (df["high"] - df[["open", "close"]].max(axis=1)) / rng
@@ -139,11 +195,13 @@ def add_htf_trend(df):
 # ----------------------------------------------------------------------
 # SETUP-ERKENNUNG
 # ----------------------------------------------------------------------
-def compute_tp(entry, side, ema50, ema200, swing_level, sl):
+def compute_tp(entry, side, ema50, ema200, swing_level, sl, far_levels=()):
+    """Erstes Ziel in der Reihenfolge EMA50, EMA200, naechstes Hoch/Tief mit mindestens 1R.
+    Reicht keins davon, werden weiter entfernte Hochs/Tiefs (30, 60 Kerzen) geprueft."""
     risk = abs(entry - sl)
     if risk == 0:
         return None
-    for level in (ema50, ema200, swing_level):
+    for level in (ema50, ema200, swing_level, *far_levels):
         if level is None or np.isnan(level):
             continue
         if side == "long" and level > entry and (level - entry) >= MIN_RR * risk:
@@ -181,15 +239,19 @@ def find_setups(df, symbol):
                 ok = df.loc[c, "close"] > df.loc[c, "ema20"] if side == "long" \
                     else df.loc[c, "close"] < df.loc[c, "ema20"]
                 slope = df.loc[c, "htf_slope"]
-                trend_ok = np.isnan(slope) or (slope >= 0 if side == "long" else slope <= 0)
+                trend_ok = (not TREND_FILTER) or np.isnan(slope) or (slope >= 0 if side == "long" else slope <= 0)
                 if ok and not trend_ok:
                     trend_blocked = True
                 if ok and trend_ok:
                     confirm = c
                     break
             if confirm is None:
-                note(symbol, side, sts, "15m-Trend blockt" if trend_blocked
-                     else "kein Schluss ueber/unter EMA20 in 3 Kerzen")
+                if trend_blocked:
+                    note(symbol, side, sts, "15m-Trend blockt")
+                elif s + CONFIRM_WINDOW > L:
+                    note(symbol, side, sts, "wartet auf Bestaetigung")
+                else:
+                    note(symbol, side, sts, f"kein Schluss ueber/unter EMA20 in {CONFIRM_WINDOW} Kerzen")
                 continue
             if confirm < L - 2:
                 note(symbol, side, sts, "Bestaetigung schon zu alt")
@@ -199,7 +261,8 @@ def find_setups(df, symbol):
             entry = float(df.loc[c, "close"])
             sl = extreme * (1 - SL_BUFFER_PCT / 100) if side == "long" else extreme * (1 + SL_BUFFER_PCT / 100)
             swing_level = df.loc[s, "swing_high"] if side == "long" else df.loc[s, "swing_low"]
-            tp = compute_tp(entry, side, df.loc[c, "ema50"], df.loc[c, "ema200"], swing_level, sl)
+            far = [df.loc[s, f"swing_{'high' if side == 'long' else 'low'}{n}"] for n in (30, 60)]
+            tp = compute_tp(entry, side, df.loc[c, "ema50"], df.loc[c, "ema200"], swing_level, sl, far)
             if tp is None:
                 note(symbol, side, sts, "kein Ziel mit CRV >= 1")
                 continue
@@ -304,7 +367,10 @@ def find_setups_15m(df, symbol):
                     confirm = c
                     break
             if confirm is None:
-                note(symbol, side, bs, "15m: kein 5m-Schluss ueber/unter EMA20")
+                if end + CONFIRM_WINDOW > L:
+                    note(symbol, side, bs, "15m: wartet auf Bestaetigung")
+                else:
+                    note(symbol, side, bs, "15m: kein 5m-Schluss ueber/unter EMA20")
                 continue
             if confirm < L - 2:
                 note(symbol, side, bs, "15m: Bestaetigung schon zu alt")
@@ -313,7 +379,8 @@ def find_setups_15m(df, symbol):
             entry = float(df.loc[c, "close"])
             sl = extreme * (1 - SL_BUFFER_PCT / 100) if side == "long" else extreme * (1 + SL_BUFFER_PCT / 100)
             swing_level = row["swing_high"] if side == "long" else row["swing_low"]
-            tp = compute_tp(entry, side, df.loc[c, "ema50"], df.loc[c, "ema200"], swing_level, sl)
+            far = [df.loc[end, f"swing_{'high' if side == 'long' else 'low'}{n}"] for n in (30, 60)]
+            tp = compute_tp(entry, side, df.loc[c, "ema50"], df.loc[c, "ema200"], swing_level, sl, far)
             if tp is None:
                 note(symbol, side, bs, "15m: kein Ziel mit CRV >= 1")
                 continue
@@ -455,21 +522,23 @@ def save_state(state):
 # ----------------------------------------------------------------------
 def shadow_update(shadow, raw, df, symbol, live_setups):
     """Neue Kandidaten aller Varianten merken und offene anhand der Kerzen auswerten."""
-    global _quiet, WICK_MIN
+    global _quiet
+    g = globals()
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     cands = [("15m" if x.get("kind") == "15m" else "w60", x) for x in live_setups
              if x.get("kind") == "15m" or x.get("grade", "A") == "A"]
     _quiet = True
     try:
-        for w in SHADOW_WICKS:
-            old = WICK_MIN
-            WICK_MIN = w
+        for name, override in SHADOW_VARIANTS:
+            old = {k: g[k] for k in override}
+            g.update(override)
             try:
                 dfw = add_htf_trend(add_indicators(raw))
+                found = find_setups(dfw, symbol)
             finally:
-                WICK_MIN = old
-            for x in find_setups(dfw, symbol):
-                cands.append((f"w{int(round(w * 100))}", x))
+                g.update(old)
+            for x in found:
+                cands.append((name, x))
     finally:
         _quiet = False
     for variant, x in cands:
@@ -503,8 +572,9 @@ def shadow_update(shadow, raw, df, symbol, live_setups):
 
 
 def shadow_table(shadow):
-    labels = [("w30", "Lunte>=30%"), ("w40", "Lunte>=40%"), ("w50", "Lunte>=50%"),
-              ("w60", "Lunte>=60% (live)"), ("15m", "15m-Sweep (live)")]
+    labels = [("w60", "nur A (Lunte>=60%)"), ("w40", "live A+B (>=40%)"), ("w30", "Lunte>=30%"),
+              ("w50", "Lunte>=50%"), ("notrend", "ohne 15m-Trend"), ("conf5", "Bestaet. 5 Kerzen"),
+              ("score2", "Qualitaet ab 2/5"), ("15m", "15m-Sweep (live)")]
     lines = []
     for key, label in labels:
         items = [r for r in shadow.values() if r["v"] == key]
@@ -514,7 +584,7 @@ def shadow_table(shadow):
         done = tp + sl
         wr = f"{tp / done * 100:.0f}%" if done else "-"
         total = sum(r["r"] for r in items if r["res"] in ("TP", "SL"))
-        lines.append(f"{label:<19} Trades {len(items):3d} | TP {tp:3d} SL {sl:3d} offen {offen:2d} | "
+        lines.append(f"{label:<18} Trades {len(items):3d} | TP {tp:3d} SL {sl:3d} offen {offen:2d} | "
                      f"Treffer {wr:>4} | netto {total:+.1f} R")
     return "\n".join(lines)
 
