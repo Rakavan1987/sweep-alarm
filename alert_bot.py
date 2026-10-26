@@ -29,6 +29,9 @@ COINS = [
     "XRP/USDT:USDT", "DOGE/USDT:USDT", "AVAX/USDT:USDT", "LINK/USDT:USDT",
     "ADA/USDT:USDT", "LTC/USDT:USDT", "DOT/USDT:USDT", "NEAR/USDT:USDT",
     "SUI/USDT:USDT", "TRX/USDT:USDT", "UNI/USDT:USDT", "ATOM/USDT:USDT",
+    # neu dazu (was es auf Phemex nicht gibt, wird beim Start automatisch uebersprungen)
+    "XLM/USDT:USDT", "BCH/USDT:USDT", "ETC/USDT:USDT", "AAVE/USDT:USDT", "HBAR/USDT:USDT",
+    "FIL/USDT:USDT", "ARB/USDT:USDT", "OP/USDT:USDT", "APT/USDT:USDT", "INJ/USDT:USDT",
 ]
 CAPITAL = 400.0          # dein Kapital in USDT
 RISK_PCT = 0.5           # Risiko je Trade in % (erste 30 Trades: 0.5)
@@ -533,13 +536,32 @@ def make_exchange():
     return ccxt.phemex({"enableRateLimit": True})
 
 
+_missing_printed = False
+
+
+def usable_coins(exchange):
+    """Nur Coins verwenden, die es auf Phemex wirklich gibt (der Rest wird uebersprungen)."""
+    global _missing_printed
+    try:
+        markets = exchange.load_markets()
+    except Exception:
+        return list(COINS)
+    ok = [c for c in COINS if c in markets]
+    missing = [c for c in COINS if c not in markets]
+    if missing and not _missing_printed:
+        print("Nicht auf Phemex gefunden, uebersprungen:", ", ".join(c.split("/")[0] for c in missing))
+        _missing_printed = True
+    return ok or list(COINS)
+
+
 def run(exchange=None, send=send_telegram):
     exchange = exchange or make_exchange()
     state = load_state()
     shadow = state.get("__shadow__") or {}
     btc_note = None
     errors, sent = 0, 0
-    for symbol in COINS:
+    coins = usable_coins(exchange)
+    for symbol in coins:
         try:
             raw = fetch_5m(exchange, symbol)
             df = add_htf_trend(add_indicators(raw))
@@ -575,7 +597,7 @@ def run(exchange=None, send=send_telegram):
             print(f"{symbol}: Signal {s['side']} gesendet")
     state["__shadow__"] = shadow
     save_state(state)
-    print(f"Fertig. Gesendet: {sent}, Ladefehler: {errors}/{len(COINS)}")
+    print(f"Fertig. Gesendet: {sent}, Ladefehler: {errors}/{len(coins)}")
     return sent, errors
 
 
@@ -620,7 +642,7 @@ if __name__ == "__main__":
     elif "--once" in sys.argv:
         sent, errors = run()
         print_stats()
-        if errors == len(COINS):
+        if errors >= 10:
             sys.exit(1)  # alles fehlgeschlagen -> GitHub zeigt rotes X
     elif "--loop" in sys.argv:
         loop(float(sys.argv[sys.argv.index("--loop") + 1]))
