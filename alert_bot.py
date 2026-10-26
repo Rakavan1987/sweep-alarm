@@ -45,6 +45,9 @@ MAX_FEE_SHARE = 30.0     # Gebuehren duerfen hoechstens 30 % des Risikos sein
 CHASE_R = 0.25           # nicht mehr einsteigen, wenn der Kurs mehr als 0.25R weggelaufen ist
 MAX_AGE_MIN = 4          # Signal nur melden, wenn die Bestaetigungskerze nicht aelter ist
 
+SWING15 = 10             # 15m-Sweep: letztes Hoch/Tief aus den letzten 10 Kerzen (15m)
+SWEEP15_MIN_PCT = 0.10   # 15m-Sweep mindestens 0.10 % ueber/unter dem Swing
+
 STATE_FILE = "state.json"
 TF_MIN = 5
 
@@ -64,6 +67,11 @@ def print_stats():
         print("keine Sweep-Kandidaten gesehen")
     for reason, n in sorted(c.items(), key=lambda x: -x[1]):
         print(f"{n:4d}  {reason}")
+    # Einzelfaelle (UTC), damit man einen bestimmten Sweep nachschlagen kann
+    rows = sorted(STATS, key=lambda x: (x[2], x[0]))
+    print("--- Einzelfaelle (Zeit in UTC) ---")
+    for sym, side, ts, reason in rows[:120]:
+        print(f"{ts[5:16]}  {sym.split('/')[0]:<6} {side:<5} {reason}")
     STATS.clear()
 
 
@@ -220,6 +228,113 @@ def find_setups(df, symbol):
     return out
 
 
+def add_15m_sweeps(df):
+    """15m-Kerzen aus den 5m-Kerzen bauen (nur vollstaendige) und Sweeps markieren."""
+    d = df.set_index("timestamp")
+    h = d.resample("15min").agg({"open": "first", "high": "max", "low": "min", "close": "last"})
+    h["n"] = d["close"].resample("15min").count()
+    h = h[h["n"] == 3].copy()
+    h["swing_low"] = h["low"].shift(1).rolling(SWING15).min()
+    h["swing_high"] = h["high"].shift(1).rolling(SWING15).max()
+    rng = (h["high"] - h["low"]).replace(0, np.nan)
+    h["lower_wick"] = (h[["open", "close"]].min(axis=1) - h["low"]) / rng
+    h["upper_wick"] = (h["high"] - h[["open", "close"]].max(axis=1)) / rng
+    h["depth_low"] = (h["swing_low"] - h["low"]) / h["swing_low"] * 100
+    h["depth_high"] = (h["high"] - h["swing_high"]) / h["swing_high"] * 100
+    h["long_sweep"] = (h["low"] < h["swing_low"]) & (h["depth_low"] >= SWEEP15_MIN_PCT) \
+        & (h["lower_wick"] >= WICK_MIN)
+    h["short_sweep"] = (h["high"] > h["swing_high"]) & (h["depth_high"] >= SWEEP15_MIN_PCT) \
+        & (h["upper_wick"] >= WICK_MIN)
+    return h
+
+
+def find_setups_15m(df, symbol):
+    """EXPERIMENTELL: Sweep auf der 15m-Kerze, Bestaetigung auf 5m (Schluss ueber/unter EMA20).
+    Kein 15m-Trendfilter. Wird in der Nachricht als 'neu, ungetestet' markiert."""
+    out = []
+    L = len(df) - 1
+    if L < 220:
+        return out
+    h = add_15m_sweeps(df)
+    if len(h) < SWING15 + 2:
+        return out
+    idx = {ts: i for i, ts in enumerate(df["timestamp"])}
+    last_close = float(df.loc[L, "close"])
+    for side in ("long", "short"):
+        flag = "long_sweep" if side == "long" else "short_sweep"
+        for bs in h.index[-4:]:
+            row = h.loc[bs]
+            if not bool(row[flag]):
+                continue
+            end = idx.get(bs + pd.Timedelta(minutes=10))  # letzte 5m-Kerze dieser 15m-Kerze
+            if end is None:
+                continue
+            extreme = float(row["low"] if side == "long" else row["high"])
+            note(symbol, side, bs, "15m-Sweep mit Lunte gefunden")
+            confirm = None
+            for c in range(end, min(end + CONFIRM_WINDOW, L) + 1):
+                if c > end:
+                    if side == "long" and df.loc[c, "low"] < extreme:
+                        break
+                    if side == "short" and df.loc[c, "high"] > extreme:
+                        break
+                ok = df.loc[c, "close"] > df.loc[c, "ema20"] if side == "long" \
+                    else df.loc[c, "close"] < df.loc[c, "ema20"]
+                if ok:
+                    confirm = c
+                    break
+            if confirm is None:
+                note(symbol, side, bs, "15m: kein 5m-Schluss ueber/unter EMA20")
+                continue
+            if confirm < L - 2:
+                note(symbol, side, bs, "15m: Bestaetigung schon zu alt")
+                continue
+            c = confirm
+            entry = float(df.loc[c, "close"])
+            sl = extreme * (1 - SL_BUFFER_PCT / 100) if side == "long" else extreme * (1 + SL_BUFFER_PCT / 100)
+            swing_level = row["swing_high"] if side == "long" else row["swing_low"]
+            tp = compute_tp(entry, side, df.loc[c, "ema50"], df.loc[c, "ema200"], swing_level, sl)
+            if tp is None:
+                note(symbol, side, bs, "15m: kein Ziel mit CRV >= 1")
+                continue
+            risk = abs(entry - sl)
+            moved = (last_close - entry) if side == "long" else (entry - last_close)
+            wrong_side = (last_close <= sl) if side == "long" else (last_close >= sl)
+            if wrong_side or moved > CHASE_R * risk:
+                note(symbol, side, bs, "15m: Kurs schon zu weit weggelaufen")
+                continue
+            sl_pct = risk / entry * 100
+            risk_usd = CAPITAL * RISK_PCT / 100
+            size = risk_usd / (sl_pct / 100)
+            fee_usd = size * FEE_PCT / 100 * 2
+            fee_share = fee_usd / risk_usd * 100
+            rr = abs(tp - entry) / risk
+            wick = float(row["lower_wick" if side == "long" else "upper_wick"])
+            depth = float(row["depth_low" if side == "long" else "depth_high"])
+            slope = df.loc[c, "htf_slope"]
+            strict_trend = (not np.isnan(slope)) and (slope > 0 if side == "long" else slope < 0)
+            score = int(wick >= 0.7) + int(depth >= 0.20) + int(strict_trend) \
+                + int(rr >= 1.5) + int(fee_share <= 15)
+            if fee_share > MAX_FEE_SHARE:
+                note(symbol, side, bs, "15m: Gebuehren zu hoch (SL zu eng)")
+                continue
+            if score < MIN_SCORE:
+                note(symbol, side, bs, "15m: Qualitaet unter 3 von 5")
+                continue
+            max_chase = entry + CHASE_R * risk if side == "long" else entry - CHASE_R * risk
+            out.append({
+                "symbol": symbol, "side": side, "confirm_ts": df.loc[c, "timestamp"], "kind": "15m",
+                "entry": entry, "sl": sl, "tp": tp, "max_chase": max_chase,
+                "sl_pct": sl_pct, "rr": rr, "size": size, "risk_usd": risk_usd,
+                "fee_usd": fee_usd, "fee_share": fee_share, "score": score,
+                "wick": wick, "depth": depth,
+                "trend": "mit dem 15m-Trend" if strict_trend else "gegen/neutral zum 15m-Trend",
+                "last_close": last_close,
+            })
+            break
+    return out
+
+
 # ----------------------------------------------------------------------
 # NACHRICHT
 # ----------------------------------------------------------------------
@@ -243,6 +358,7 @@ def build_message(s, btc_note):
     stars = "★" * s["score"] + "☆" * (5 - s["score"])
     tp_gain = s["risk_usd"] * s["rr"]
     lines = [
+        f"{'🧪 15m-SWEEP (neu, ungetestet)' + chr(10) if s.get('kind') == '15m' else ''}"
         f"{arrow} {coin}USDT   Qualitaet {stars} ({s['score']}/5)",
         f"Kerze geschlossen vor ca. {max(0, round(age))} Min",
         "",
@@ -321,8 +437,14 @@ def run(exchange=None, send=send_telegram):
             errors += 1
             print(f"{symbol}: Fehler beim Laden: {e}")
             continue
-        for s in find_setups(df, symbol):
-            key = f"{s['symbol']}|{s['side']}|{s['confirm_ts']}"
+        setups = find_setups(df, symbol)
+        try:  # die 15m-Suche darf die normale Suche nie stoeren
+            seen = {(x["side"], x["confirm_ts"]) for x in setups}
+            setups += [x for x in find_setups_15m(df, symbol) if (x["side"], x["confirm_ts"]) not in seen]
+        except Exception as e:
+            print(f"{symbol}: Fehler bei der 15m-Suche: {e}")
+        for s in setups:
+            key = f"{s['symbol']}|{s['side']}|{s['confirm_ts']}" + ("|15m" if s.get("kind") == "15m" else "")
             age_min = (datetime.now(timezone.utc).replace(tzinfo=None)
                        - s["confirm_ts"].to_pydatetime()).total_seconds() / 60 - TF_MIN
             if key in state:
