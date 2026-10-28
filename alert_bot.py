@@ -609,6 +609,41 @@ def shadow_table(shadow):
         total = sum(r["r"] for r in items if r["res"] in ("TP", "SL"))
         lines.append(f"{label:<18} Trades {len(items):3d} | TP {tp:3d} SL {sl:3d} offen {offen:2d} | "
                      f"Treffer {wr:>4} | netto {total:+.1f} R")
+    return "\n".join(lines) + shadow_hours(shadow)
+
+
+def shadow_hours(shadow):
+    """Live-Setups (5m A+B und 15m) nach Tageszeit in Schweizer Zeit: wann kommen gute Setups?"""
+    try:
+        from zoneinfo import ZoneInfo
+        ch = ZoneInfo("Europe/Zurich")
+    except Exception:
+        return ""
+    buckets = [("00-06 Nacht", 0, 6), ("06-09 Morgen", 6, 9), ("09-17 Arbeit", 9, 17),
+               ("17-23 Abend", 17, 23), ("23-24 spaet", 23, 24)]
+    rows = {b[0]: [0, 0, 0, 0.0] for b in buckets}   # Trades, TP, SL, R
+    for r in shadow.values():
+        if r.get("v") not in ("w40", "15m"):
+            continue
+        try:
+            h = pd.Timestamp(r["ts"]).tz_localize("UTC").tz_convert(ch).hour
+        except Exception:
+            continue
+        for name, a, b in buckets:
+            if a <= h < b:
+                row = rows[name]
+                row[0] += 1
+                if r["res"] == "TP":
+                    row[1] += 1
+                    row[3] += r["r"]
+                elif r["res"] == "SL":
+                    row[2] += 1
+                    row[3] += r["r"]
+                break
+    lines = ["", "Nach Tageszeit (CH-Zeit, Live-Setups 5m A+B und 15m):"]
+    for name, _, _ in buckets:
+        t, tp, sl, rr = rows[name]
+        lines.append(f"{name:<13} Trades {t:3d} | TP {tp:3d} SL {sl:3d} | netto {rr:+.1f} R")
     return "\n".join(lines)
 
 
