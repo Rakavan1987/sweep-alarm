@@ -32,7 +32,7 @@ COINS = [
     # neu dazu (was es auf Phemex nicht gibt, wird beim Start automatisch uebersprungen)
     "XLM/USDT:USDT", "BCH/USDT:USDT", "ETC/USDT:USDT", "AAVE/USDT:USDT", "HBAR/USDT:USDT",
     "FIL/USDT:USDT", "ARB/USDT:USDT", "INJ/USDT:USDT",
-    "WLD/USDT:USDT", "TIA/USDT:USDT", "SEI/USDT:USDT", "RUNE/USDT:USDT", "ONDO/USDT:USDT", "ENA/USDT:USDT",
+    "WLD/USDT:USDT", "ONDO/USDT:USDT", "ENA/USDT:USDT",
 ]
 CAPITAL = 400.0          # dein Kapital in USDT
 RISK_PCT = 0.5           # Risiko je Trade in % (erste 30 Trades: 0.5)
@@ -520,6 +520,22 @@ def save_state(state):
 # ----------------------------------------------------------------------
 # SCHATTEN-TRACKER: Varianten still mitlaufen lassen und selbst auswerten
 # ----------------------------------------------------------------------
+_BTC = None   # BTC-5m-Daten mit 15m-Trend (fuer die Schatten-Variante "mit/gegen BTC")
+
+
+def btc_aligned(side, ts):
+    """True = Setup laeuft mit der BTC-15m-Richtung, False = dagegen, None = unbekannt/flach."""
+    if _BTC is None:
+        return None
+    try:
+        slope = _BTC[_BTC["timestamp"] <= pd.Timestamp(ts)]["htf_slope"].iloc[-1]
+        if np.isnan(slope) or slope == 0:
+            return None
+        return bool(slope > 0) if side == "long" else bool(slope < 0)
+    except Exception:
+        return None
+
+
 def shadow_update(shadow, raw, df, symbol, live_setups):
     """Neue Kandidaten aller Varianten merken und offene anhand der Kerzen auswerten."""
     global _quiet
@@ -527,6 +543,12 @@ def shadow_update(shadow, raw, df, symbol, live_setups):
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     cands = [("15m" if x.get("kind") == "15m" else "w60", x) for x in live_setups
              if x.get("kind") == "15m" or x.get("grade", "A") == "A"]
+    for lab, x in list(cands):   # dieselben Live-Setups, getrennt nach BTC-Richtung
+        al = btc_aligned(x["side"], x["confirm_ts"])
+        if al is True:
+            cands.append(("btc", x))
+        elif al is False:
+            cands.append(("vsbtc", x))
     _quiet = True
     try:
         for name, override in SHADOW_VARIANTS:
@@ -574,7 +596,8 @@ def shadow_update(shadow, raw, df, symbol, live_setups):
 def shadow_table(shadow):
     labels = [("w60", "nur A (Lunte>=60%)"), ("w40", "live A+B (>=40%)"), ("w30", "Lunte>=30%"),
               ("w50", "Lunte>=50%"), ("notrend", "ohne 15m-Trend"), ("conf5", "Bestaet. 5 Kerzen"),
-              ("score2", "Qualitaet ab 2/5"), ("15m", "15m-Sweep (live)")]
+              ("score2", "Qualitaet ab 2/5"), ("15m", "15m-Sweep (live)"),
+              ("btc", "live MIT BTC"), ("vsbtc", "live GEGEN BTC")]
     lines = []
     for key, label in labels:
         items = [r for r in shadow.values() if r["v"] == key]
@@ -644,6 +667,12 @@ def run(exchange=None, send=send_telegram):
     shadow = state.get("__shadow__") or {}
     btc_note = None
     errors, sent = 0, 0
+    global _BTC
+    try:
+        _BTC = add_htf_trend(add_indicators(fetch_5m(exchange, "BTC/USDT:USDT")))
+    except Exception as e:
+        _BTC = None
+        print(f"BTC-Daten fuer die Schatten-Variante nicht geladen: {e}")
     coins = usable_coins(exchange)
     for symbol in coins:
         try:
@@ -685,12 +714,38 @@ def run(exchange=None, send=send_telegram):
     return sent, errors
 
 
+def persist_state():
+    """Im GitHub-Lauf den Stand zwischendurch committen, damit er bei einem Abbruch
+    (z. B. Run abbrechen und neu starten) nicht verloren geht. Fehler sind egal."""
+    if os.environ.get("GITHUB_ACTIONS") != "true":
+        return
+    import subprocess
+    try:
+        cmds = [["git", "config", "user.name", "sweep-alarm"],
+                ["git", "config", "user.email", "sweep-alarm@users.noreply.github.com"],
+                ["git", "add", STATE_FILE]]
+        for c in cmds:
+            subprocess.run(c, check=True, capture_output=True, timeout=60)
+        if subprocess.run(["git", "diff", "--cached", "--quiet", "--", STATE_FILE],
+                          capture_output=True, timeout=60).returncode == 0:
+            return  # nichts geaendert
+        subprocess.run(["git", "commit", "-m", "state"], check=True, capture_output=True, timeout=60)
+        subprocess.run(["git", "push"], check=True, capture_output=True, timeout=120)
+        print("Stand gespeichert (git push).")
+    except Exception as e:
+        print(f"Stand speichern fehlgeschlagen (nicht schlimm): {e}")
+
+
+PERSIST_EVERY_MIN = 20
+
+
 def loop(minutes, pause_s=60):
     """Prueft eine Weile lang jede Minute. So kommt das Signal kurz nach dem
     Kerzenschluss, auch wenn GitHub den Start des Laufs verzoegert."""
     exchange = make_exchange()
     end = time.time() + minutes * 60
     n = 0
+    last_persist = time.time()
     while True:
         n += 1
         print(f"--- Durchgang {n} ({datetime.now(timezone.utc):%H:%M:%S} UTC) ---")
@@ -698,6 +753,9 @@ def loop(minutes, pause_s=60):
             run(exchange)
         except Exception as e:  # ein Fehler darf die Schleife nicht beenden
             print(f"Fehler im Durchgang: {e}")
+        if time.time() - last_persist >= PERSIST_EVERY_MIN * 60:
+            persist_state()
+            last_persist = time.time()
         if time.time() + pause_s >= end:
             break
         time.sleep(pause_s)
