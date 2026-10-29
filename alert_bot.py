@@ -442,6 +442,17 @@ def price_fmt(x):
     return f"{x:.5f}"
 
 
+def _time_stop_line(s):
+    """Zeitstopp-Hinweis: spaetestens 30 Min nach dem Einstieg (Schweizer Zeit)."""
+    try:
+        from zoneinfo import ZoneInfo
+        end = (s["confirm_ts"].to_pydatetime().replace(tzinfo=timezone.utc)
+               + pd.Timedelta(minutes=TF_MIN + TIME_STOP_MIN)).astimezone(ZoneInfo("Europe/Zurich"))
+        return f"Zeitstopp: spaetestens {end:%H:%M} Uhr schliessen ({TIME_STOP_MIN} Min)"
+    except Exception:
+        return f"Zeitstopp: spaetestens {TIME_STOP_MIN} Min nach Einstieg schliessen"
+
+
 def build_message(s, btc_note, wave_note=None):
     coin = s["symbol"].split("/")[0]
     arrow = "🟢 LONG" if s["side"] == "long" else "🔴 SHORT"
@@ -463,6 +474,7 @@ def build_message(s, btc_note, wave_note=None):
         f"SL:     {price_fmt(s['sl'])}  ({s['sl_pct']:.2f} %)",
         f"TP:     {price_fmt(s['tp'])}  (CRV 1:{s['rr']:.1f})",
         f"Nicht mehr einsteigen {'ueber' if s['side']=='long' else 'unter'} {price_fmt(s['max_chase'])}",
+        _time_stop_line(s),
         "",
         f"Positionsgroesse: {s['size']:.0f} USDT",
         f"Risiko: {s['risk_usd']:.2f} USDT ({s['risk_usd']/CAPITAL*100:.2f} %)  |  Gewinn bei TP: ca. +{tp_gain:.2f} USDT",
@@ -544,6 +556,39 @@ def btc_aligned(side, ts):
         return None
 
 
+TIME_STOP_MIN = 30   # Zeitstopp: spaetestens 30 Min nach dem Einstieg raus (Test in der Schatten-Bilanz)
+
+
+def eval30(r, df):
+    """Ergebnis eines Schatten-Trades mit Zeitstopp: TP/SL innerhalb von 30 Min, sonst Ausstieg
+    zum Schlusskurs der Kerze 30 Min nach der Bestaetigung. Setzt r['res30'] und r['r30']."""
+    if r.get("res30") is not None:
+        return
+    t0 = pd.Timestamp(r["ts"])
+    t_end = t0 + pd.Timedelta(minutes=TIME_STOP_MIN)
+    risk = abs(r["entry"] - r["sl"])
+    if risk <= 0:
+        return
+    for _, c in df[df["timestamp"] > t0].iterrows():
+        t = pd.Timestamp(c["timestamp"])
+        if t > t_end:
+            break
+        if r["side"] == "long":
+            hit_sl, hit_tp = c["low"] <= r["sl"], c["high"] >= r["tp"]
+        else:
+            hit_sl, hit_tp = c["high"] >= r["sl"], c["low"] <= r["tp"]
+        if hit_sl:
+            r["res30"], r["r30"] = "SL", -1.0 - r["fee_r"]
+            return
+        if hit_tp:
+            r["res30"], r["r30"] = "TP", r["rr"] - r["fee_r"]
+            return
+        if t == t_end:
+            move = (c["close"] - r["entry"]) if r["side"] == "long" else (r["entry"] - c["close"])
+            r["res30"], r["r30"] = "T", move / risk - r["fee_r"]
+            return
+
+
 def shadow_update(shadow, raw, df, symbol, live_setups):
     """Neue Kandidaten aller Varianten merken und offene anhand der Kerzen auswerten."""
     global _quiet
@@ -580,6 +625,13 @@ def shadow_update(shadow, raw, df, symbol, live_setups):
                        "entry": float(x["entry"]), "sl": float(x["sl"]), "tp": float(x["tp"]),
                        "rr": float(x["rr"]), "fee_r": float(x["fee_share"]) / 100.0,
                        "res": None, "r": 0.0}
+    # Zeitstopp-Auswertung (30 Min) fuer alle Trades dieses Coins, auch schon geschlossene
+    for sid, r in shadow.items():
+        if r["sym"] == symbol and r.get("res30") is None:
+            try:
+                eval30(r, df)
+            except Exception as e:
+                print(f"{symbol}: Zeitstopp-Auswertung fehlgeschlagen: {e}")
     # offene Trades dieses Coins auswerten (bei gleichzeitigem Treffer gilt SL)
     for sid, r in shadow.items():
         if r["res"] or r["sym"] != symbol:
@@ -617,7 +669,27 @@ def shadow_table(shadow):
         total = sum(r["r"] for r in items if r["res"] in ("TP", "SL"))
         lines.append(f"{label:<18} Trades {len(items):3d} | TP {tp:3d} SL {sl:3d} offen {offen:2d} | "
                      f"Treffer {wr:>4} | netto {total:+.1f} R")
-    return "\n".join(lines) + shadow_hours(shadow)
+    return "\n".join(lines) + shadow_t30(shadow) + shadow_hours(shadow)
+
+
+def shadow_t30(shadow):
+    """Vergleich: Live-Setups mit und ohne 30-Min-Zeitstopp (gleiche Trades)."""
+    out = ["", f"Mit Zeitstopp {TIME_STOP_MIN} Min (Ausstieg zum Marktpreis) gegen ohne Limit:"]
+    any_row = False
+    for key, label in [("15m", "15m-Sweep"), ("w40", "5m A+B"), ("w60", "5m nur A")]:
+        items = [r for r in shadow.values() if r["v"] == key and r.get("res30") is not None]
+        if not items:
+            continue
+        any_row = True
+        tp = sum(r["res30"] == "TP" for r in items)
+        sl = sum(r["res30"] == "SL" for r in items)
+        tt = sum(r["res30"] == "T" for r in items)
+        r30 = sum(r["r30"] for r in items)
+        free = sum(r["r"] for r in items if r["res"] in ("TP", "SL"))
+        nfree = sum(1 for r in items if r["res"] in ("TP", "SL"))
+        out.append(f"{label:<10} {len(items):3d} Trades | TP {tp:2d} SL {sl:2d} Zeit-Aus {tt:2d} | "
+                   f"mit Stopp {r30:+.1f} R | ohne Limit {free:+.1f} R ({nfree} fertig)")
+    return "\n".join(out) if any_row else ""
 
 
 def shadow_hours(shadow):
