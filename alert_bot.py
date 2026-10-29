@@ -117,6 +117,48 @@ def final_cases():
     return out
 
 
+def record_misses(state):
+    """Endgueltigen Grund jedes verpassten Sweeps mit Lunte im Stand merken (fuer die Bilanz)."""
+    miss = state.get("__miss__")
+    if not isinstance(miss, dict):
+        miss = {}
+    skip = ("SIGNAL gesendet", "Signal schon zu alt", "Sweep ohne Lunte", "wartet auf Bestaetigung",
+            "Sweep mit Lunte gefunden")
+    for (kind, sym, side, ts), r in final_cases().items():
+        if r in skip:
+            continue
+        miss[f"{kind}|{sym.split('/')[0]}|{side}|{ts}"] = r
+    state["__miss__"] = miss
+
+
+def shadow_miss(state):
+    """Bilanz-Abschnitt: warum gab es fuer Sweeps der letzten 24 Std keinen Alarm?"""
+    miss = state.get("__miss__")
+    if not isinstance(miss, dict) or not miss:
+        return ""
+    from collections import Counter
+    from zoneinfo import ZoneInfo
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    cut = (now - pd.Timedelta(hours=24)).strftime(_TS_FMT)
+    rows = []
+    for key, r in miss.items():
+        kind, sym, side, ts = key.split("|", 3)
+        if ts >= cut:
+            rows.append((ts, sym, side, kind, r))
+    if not rows:
+        return ""
+    rows.sort()
+    cnt = Counter(r for *_, r in rows)
+    out = ["", f"Verpasste Sweeps mit Lunte (24 Std): {len(rows)} - warum kein Alarm:"]
+    for reason, n in cnt.most_common(6):
+        out.append(f"{n:3d}x {reason}")
+    out.append("Letzte Faelle (CH-Zeit):")
+    for ts, sym, side, kind, r in rows[-8:]:
+        t = pd.Timestamp(ts).tz_localize("UTC").astimezone(ZoneInfo("Europe/Zurich"))
+        out.append(f"{t:%d.%m %H:%M} {sym} {side} {kind}: {r}")
+    return "\n".join(out)
+
+
 def print_stats():
     from collections import Counter
     fin = final_cases()
@@ -307,7 +349,8 @@ def find_setups(df, symbol):
                 "sl_pct": sl_pct, "rr": rr, "size": size, "risk_usd": risk_usd,
                 "fee_usd": fee_usd, "fee_share": fee_share, "score": score, "grade": grade,
                 "wick": wick, "depth": depth, "trend": "mit dem 15m-Trend" if strict_trend else "15m-Trend flach",
-                "last_close": last_close,
+                "last_close": last_close, "sweep_ts": sts, "extreme": extreme,
+                "slope": None if np.isnan(slope) else float(slope),
             })
             break  # pro Richtung nur das erste gueltige Setup
     return out
@@ -529,6 +572,9 @@ def save_state(state):
         out["__summary__"] = state["__summary__"]
     shadow = state.get("__shadow__") or {}
     out["__shadow__"] = {k: r for k, r in shadow.items() if r.get("ts", "") >= cutoff_sh}
+    if isinstance(state.get("__miss__"), dict):
+        cutoff_miss = (now - pd.Timedelta(days=2)).strftime("%Y-%m-%d %H:%M:%S")
+        out["__miss__"] = {k: v for k, v in state["__miss__"].items() if k.split("|", 3)[-1] >= cutoff_miss}
     if isinstance(state.get("__wave__"), dict):
         out["__wave__"] = state["__wave__"]
     if isinstance(state.get("__recent__"), list):
@@ -554,6 +600,25 @@ def btc_aligned(side, ts):
         return bool(slope > 0) if side == "long" else bool(slope < 0)
     except Exception:
         return None
+
+
+REV_LOOKBACK = 36   # Trendwende: Sweep-Tief hoeher (Hoch tiefer) als die letzten 36 Kerzen (3 Std)
+
+
+def is_reversal(df, x):
+    """Setup GEGEN den 15m-Trend, dessen Sweep-Extrem aber schon ein hoeheres Tief (bzw. tieferes Hoch)
+    als die letzten 3 Stunden ist = moegliche Trendwende. Nur fuer die Schatten-Auswertung."""
+    sl = x.get("slope")
+    if sl is None or x.get("sweep_ts") is None:
+        return False
+    against = sl < 0 if x["side"] == "long" else sl > 0
+    if not against:
+        return False
+    idx = df.index[df["timestamp"] == x["sweep_ts"]]
+    if len(idx) == 0 or idx[0] < REV_LOOKBACK:
+        return False
+    win = df.iloc[idx[0] - REV_LOOKBACK:idx[0]]
+    return bool(x["extreme"] > win["low"].min()) if x["side"] == "long" else bool(x["extreme"] < win["high"].max())
 
 
 TIME_STOP_MIN = 30   # Zeitstopp: spaetestens 30 Min nach dem Einstieg raus (Test in der Schatten-Bilanz)
@@ -614,6 +679,12 @@ def shadow_update(shadow, raw, df, symbol, live_setups):
                 g.update(old)
             for x in found:
                 cands.append((name, x))
+                if name == "notrend":
+                    try:
+                        if is_reversal(df, x):
+                            cands.append(("rev", x))
+                    except Exception as e:
+                        print(f"{symbol}: Trendwende-Pruefung fehlgeschlagen: {e}")
     finally:
         _quiet = False
     for variant, x in cands:
@@ -657,7 +728,8 @@ def shadow_table(shadow):
     labels = [("w60", "nur A (Lunte>=60%)"), ("w40", "live A+B (>=40%)"), ("w30", "Lunte>=30%"),
               ("w50", "Lunte>=50%"), ("notrend", "ohne 15m-Trend"), ("conf5", "Bestaet. 5 Kerzen"),
               ("score2", "Qualitaet ab 2/5"), ("15m", "15m-Sweep (live)"),
-              ("btc", "live MIT BTC"), ("vsbtc", "live GEGEN BTC")]
+              ("btc", "live MIT BTC"), ("vsbtc", "live GEGEN BTC"),
+              ("rev", "Trendwende")]
     lines = []
     for key, label in labels:
         items = [r for r in shadow.values() if r["v"] == key]
@@ -676,7 +748,7 @@ def shadow_t30(shadow):
     """Vergleich: Live-Setups mit und ohne 30-Min-Zeitstopp (gleiche Trades)."""
     out = ["", f"Mit Zeitstopp {TIME_STOP_MIN} Min (Ausstieg zum Marktpreis) gegen ohne Limit:"]
     any_row = False
-    for key, label in [("15m", "15m-Sweep"), ("w40", "5m A+B"), ("w60", "5m nur A")]:
+    for key, label in [("15m", "15m-Sweep"), ("w40", "5m A+B"), ("w60", "5m nur A"), ("rev", "Trendwende")]:
         items = [r for r in shadow.values() if r["v"] == key and r.get("res30") is not None]
         if not items:
             continue
@@ -744,6 +816,12 @@ def maybe_send_summary(send=send_telegram):
     try:
         send("📊 Schatten-Bilanz (nicht gehandelte Varianten, netto nach Gebuehren)\n" + shadow_table(shadow)
              + "\n\nR = Vielfaches des Risikos. Wenig Trades = noch nicht aussagekraeftig.")
+        try:  # Verpasst-Protokoll als eigene Nachricht (Telegram-Limit 4096 Zeichen)
+            miss = shadow_miss(st).strip()
+            if miss:
+                send("🔎 " + miss)
+        except Exception as e:
+            print(f"Verpasst-Nachricht fehlgeschlagen: {e}")
         st["__summary__"] = now.strftime("%Y-%m-%d %H:%M:%S")
         save_state(st)
     except Exception as e:
@@ -884,6 +962,10 @@ def run(exchange=None, send=send_telegram):
             return btc_note
         sent += dispatch(queue, state, send, get_btc_note)
     state["__shadow__"] = shadow
+    try:
+        record_misses(state)
+    except Exception as e:
+        print(f"Verpasst-Protokoll fehlgeschlagen: {e}")
     save_state(state)
     print(f"Fertig. Gesendet: {sent}, Ladefehler: {errors}/{len(coins)}")
     return sent, errors
