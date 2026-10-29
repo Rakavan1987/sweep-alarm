@@ -4,6 +4,7 @@
  "ADA/USDT:USDT|short|2026-10-27 13:05:00|15m": "2026-10-27 13:10:25",
  "ADA/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:48",
  "ARB/USDT:USDT|long|2026-10-27 19:40:00": "2026-10-27 19:45:36",
+ "ARB/USDT:USDT|short|2026-10-29 16:20:00|15m": "2026-10-29 16:26:11",
  "ATOM/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:54",
  "AVAX/USDT:USDT|long|2026-10-28 23:10:00": "2026-10-28 23:16:19",
  "BCH/USDT:USDT|long|2026-10-27 19:45:00": "2026-10-27 19:50:49",
@@ -20,6 +21,7 @@
  "ENA/USDT:USDT|short|2026-10-29 09:25:00": "2026-10-29 09:30:34",
  "ETC/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:56",
  "ETH/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:32",
+ "ETH/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
  "FIL/USDT:USDT|long|2026-10-26 23:15:00|15m": "2026-10-26 23:21:28",
  "FIL/USDT:USDT|short|2026-10-27 11:20:00": "2026-10-27 11:26:03",
  "FIL/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:58",
@@ -30,6 +32,7 @@
  "LINK/USDT:USDT|long|2026-10-26 23:25:00|15m": "2026-10-26 23:30:28",
  "LINK/USDT:USDT|short|2026-10-27 13:00:00|15m": "2026-10-27 13:06:29",
  "LINK/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:47",
+ "LINK/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
  "LTC/USDT:USDT|long|2026-10-28 18:00:00": "2026-10-28 18:05:31",
  "LTC/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:38",
  "NEAR/USDT:USDT|long|2026-10-26 23:10:00|15m": "2026-10-26 23:16:07",
@@ -48,33 +51,50 @@
  "WLD/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:26:00",
  "XLM/USDT:USDT|long|2026-10-28 22:30:00": "2026-10-28 22:35:13",
  "XRP/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:35",
+ "XRP/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
  "__miss__": {
   "15m|AAVE|short|2026-10-29 11:45:00": "Bestaetigung schon zu alt",
+  "15m|AAVE|short|2026-10-29 16:00:00": "kein Schluss",
+  "15m|ADA|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|ARB|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ARB|short|2026-10-29 15:30:00": "kein Schluss",
   "15m|AVAX|short|2026-10-29 13:45:00": "kein Schluss",
+  "15m|AVAX|short|2026-10-29 16:00:00": "kein Schluss",
+  "15m|BCH|short|2026-10-29 16:00:00": "kein Schluss",
+  "15m|BNB|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|BTC|short|2026-10-29 15:45:00": "kein Schluss",
   "15m|DOGE|short|2026-10-29 13:00:00": "kein Schluss",
+  "15m|DOGE|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|DOT|long|2026-10-29 12:00:00": "kein Schluss",
+  "15m|DOT|short|2026-10-29 16:00:00": "Qualitaet unter 3 von 5",
   "15m|ENA|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ENA|short|2026-10-29 14:30:00": "kein Schluss",
   "15m|ENA|short|2026-10-29 15:30:00": "kein Schluss",
   "15m|ETC|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ETC|short|2026-10-29 13:15:00": "Qualitaet unter 3 von 5",
+  "15m|ETC|short|2026-10-29 16:00:00": "kein Schluss",
+  "15m|ETH|short|2026-10-29 16:00:00": "Bestaetigung schon zu alt",
   "15m|FIL|short|2026-10-29 12:30:00": "kein Schluss",
+  "15m|FIL|short|2026-10-29 16:00:00": "Qualitaet unter 3 von 5",
   "15m|HBAR|long|2026-10-29 12:00:00": "kein Ziel mit CRV >= 1",
   "15m|HBAR|short|2026-10-29 13:00:00": "kein Schluss",
+  "15m|HBAR|short|2026-10-29 16:00:00": "Qualitaet unter 3 von 5",
   "15m|INJ|short|2026-10-29 14:00:00": "kein Schluss",
   "15m|INJ|short|2026-10-29 14:15:00": "kein Schluss",
   "15m|INJ|short|2026-10-29 14:30:00": "Bestaetigung schon zu alt",
+  "15m|INJ|short|2026-10-29 16:00:00": "Qualitaet unter 3 von 5",
   "15m|LINK|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|LINK|short|2026-10-29 13:00:00": "kein Schluss",
+  "15m|LINK|short|2026-10-29 16:00:00": "Bestaetigung schon zu alt",
   "15m|LTC|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|NEAR|short|2026-10-29 13:15:00": "Bestaetigung schon zu alt",
   "15m|NEAR|short|2026-10-29 15:30:00": "kein Schluss",
+  "15m|NEAR|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 15:45:00": "kein Schluss",
+  "15m|ONDO|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|SOL|short|2026-10-29 13:15:00": "Kurs schon zu weit weggelaufen",
+  "15m|SOL|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|SUI|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|SUI|short|2026-10-29 13:45:00": "kein Schluss",
   "15m|SUI|short|2026-10-29 14:15:00": "kein Schluss",
@@ -82,10 +102,13 @@
   "15m|TRX|long|2026-10-29 14:00:00": "kein Schluss",
   "15m|UNI|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|UNI|short|2026-10-29 13:00:00": "kein Schluss",
+  "15m|WLD|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|XLM|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|XLM|short|2026-10-29 13:15:00": "Qualitaet unter 3 von 5",
   "15m|XLM|short|2026-10-29 14:30:00": "Qualitaet unter 3 von 5",
+  "15m|XLM|short|2026-10-29 16:00:00": "Qualitaet unter 3 von 5",
   "15m|XRP|long|2026-10-29 12:30:00": "Qualitaet unter 3 von 5",
+  "15m|XRP|short|2026-10-29 16:00:00": "Bestaetigung schon zu alt",
   "5m|AAVE|short|2026-10-29 15:45:00": "kein Schluss",
   "5m|ADA|long|2026-10-29 12:05:00": "kein Schluss",
   "5m|ADA|short|2026-10-29 13:00:00": "kein Schluss",
@@ -97,6 +120,7 @@
   "5m|ARB|short|2026-10-29 12:50:00": "kein Schluss",
   "5m|ARB|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|ARB|short|2026-10-29 15:55:00": "kein Schluss",
+  "5m|ARB|short|2026-10-29 16:20:00": "SIGNAL gesendet (Marktwelle)",
   "5m|ATOM|long|2026-10-29 13:25:00": "kein Schluss",
   "5m|ATOM|long|2026-10-29 14:25:00": "kein Ziel mit CRV >= 1",
   "5m|ATOM|short|2026-10-29 12:45:00": "kein Schluss",
@@ -110,6 +134,7 @@
   "5m|BNB|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 13:55:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 15:45:00": "kein Schluss",
+  "5m|BTC|short|2026-10-29 16:05:00": "15m-Trend blockt",
   "5m|DOGE|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|DOGE|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|DOGE|short|2026-10-29 13:55:00": "kein Schluss",
@@ -178,7 +203,15 @@
  "__recent__": [
   [
    "short",
-   "2026-10-29 15:01:20"
+   "2026-10-29 16:21:02"
+  ],
+  [
+   "short",
+   "2026-10-29 16:21:02"
+  ],
+  [
+   "short",
+   "2026-10-29 16:21:02"
   ]
  ],
  "__shadow__": {
@@ -238,6 +271,19 @@
    "sym": "ADA/USDT:USDT",
    "tp": 0.2008,
    "ts": "2026-10-28 20:20:00",
+   "v": "15m"
+  },
+  "15m|ARB/USDT:USDT|short|2026-10-29 16:20:00": {
+   "entry": 0.1731,
+   "fee_r": 0.07450769396319784,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.522045868118372,
+   "side": "short",
+   "sl": 0.1758879,
+   "sym": "ARB/USDT:USDT",
+   "tp": 0.16885668832427278,
+   "ts": "2026-10-29 16:20:00",
    "v": "15m"
   },
   "15m|ATOM/USDT:USDT|short|2026-10-28 20:20:00": {
@@ -384,6 +430,19 @@
    "ts": "2026-10-28 20:15:00",
    "v": "15m"
   },
+  "15m|ETH/USDT:USDT|short|2026-10-29 16:15:00": {
+   "entry": 2356.0,
+   "fee_r": 0.1187434663163293,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.805176210482398,
+   "side": "short",
+   "sl": 2379.8093099999996,
+   "sym": "ETH/USDT:USDT",
+   "tp": 2313.02,
+   "ts": "2026-10-29 16:15:00",
+   "v": "15m"
+  },
   "15m|FIL/USDT:USDT|long|2026-10-26 23:15:00": {
    "entry": 0.903,
    "fee_r": 0.09467062729337795,
@@ -522,6 +581,19 @@
    "sym": "LINK/USDT:USDT",
    "tp": 11.483,
    "ts": "2026-10-28 20:20:00",
+   "v": "15m"
+  },
+  "15m|LINK/USDT:USDT|short|2026-10-29 16:15:00": {
+   "entry": 11.884,
+   "fee_r": 0.10113361156517887,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.7226573787554178,
+   "side": "short",
+   "sl": 12.0250095,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.64108894435039,
+   "ts": "2026-10-29 16:15:00",
    "v": "15m"
   },
   "15m|LTC/USDT:USDT|short|2026-10-28 20:15:00": {
@@ -694,6 +766,19 @@
    "sym": "XRP/USDT:USDT",
    "tp": 1.3122,
    "ts": "2026-10-28 20:15:00",
+   "v": "15m"
+  },
+  "15m|XRP/USDT:USDT|short|2026-10-29 16:15:00": {
+   "entry": 1.3056,
+   "fee_r": 0.12992660778704088,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.5922378405274706,
+   "side": "short",
+   "sl": 1.3176584999999998,
+   "sym": "XRP/USDT:USDT",
+   "tp": 1.2864,
+   "ts": "2026-10-29 16:15:00",
    "v": "15m"
   },
   "btc|AAVE/USDT:USDT|short|2026-10-29 12:00:00": {
@@ -1702,6 +1787,19 @@
    "ts": "2026-10-28 20:20:00",
    "v": "vsbtc"
   },
+  "vsbtc|ARB/USDT:USDT|short|2026-10-29 16:20:00": {
+   "entry": 0.1731,
+   "fee_r": 0.07450769396319784,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.522045868118372,
+   "side": "short",
+   "sl": 0.1758879,
+   "sym": "ARB/USDT:USDT",
+   "tp": 0.16885668832427278,
+   "ts": "2026-10-29 16:20:00",
+   "v": "vsbtc"
+  },
   "vsbtc|ATOM/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 1.631,
    "fee_r": 0.06561180020114023,
@@ -1777,6 +1875,19 @@
    "ts": "2026-10-28 20:15:00",
    "v": "vsbtc"
   },
+  "vsbtc|ETH/USDT:USDT|short|2026-10-29 16:15:00": {
+   "entry": 2356.0,
+   "fee_r": 0.1187434663163293,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.805176210482398,
+   "side": "short",
+   "sl": 2379.8093099999996,
+   "sym": "ETH/USDT:USDT",
+   "tp": 2313.02,
+   "ts": "2026-10-29 16:15:00",
+   "v": "vsbtc"
+  },
   "vsbtc|FIL/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 0.913,
    "fee_r": 0.05103647458890387,
@@ -1850,6 +1961,19 @@
    "sym": "LINK/USDT:USDT",
    "tp": 11.483,
    "ts": "2026-10-28 20:20:00",
+   "v": "vsbtc"
+  },
+  "vsbtc|LINK/USDT:USDT|short|2026-10-29 16:15:00": {
+   "entry": 11.884,
+   "fee_r": 0.10113361156517887,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.7226573787554178,
+   "side": "short",
+   "sl": 12.0250095,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.64108894435039,
+   "ts": "2026-10-29 16:15:00",
    "v": "vsbtc"
   },
   "vsbtc|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
@@ -1970,6 +2094,19 @@
    "sym": "XRP/USDT:USDT",
    "tp": 1.3122,
    "ts": "2026-10-28 20:15:00",
+   "v": "vsbtc"
+  },
+  "vsbtc|XRP/USDT:USDT|short|2026-10-29 16:15:00": {
+   "entry": 1.3056,
+   "fee_r": 0.12992660778704088,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.5922378405274706,
+   "side": "short",
+   "sl": 1.3176584999999998,
+   "sym": "XRP/USDT:USDT",
+   "tp": 1.2864,
+   "ts": "2026-10-29 16:15:00",
    "v": "vsbtc"
   },
   "w30|ARB/USDT:USDT|long|2026-10-27 19:40:00": {
@@ -2657,5 +2794,9 @@
    "v": "w60"
   }
  },
- "__summary__": "2026-10-29 03:30:37"
+ "__summary__": "2026-10-29 03:30:37",
+ "__wave__": {
+  "side": "short",
+  "start": "2026-10-29 16:26:11"
+ }
 }
