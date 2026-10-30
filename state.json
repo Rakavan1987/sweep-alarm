@@ -12,6 +12,7 @@
  "BCH/USDT:USDT|long|2026-10-28 18:35:00|15m": "2026-10-28 18:40:24",
  "BCH/USDT:USDT|long|2026-10-29 08:10:00|15m": "2026-10-29 08:15:20",
  "BCH/USDT:USDT|long|2026-10-29 18:50:00|15m": "2026-10-29 18:56:03",
+ "BCH/USDT:USDT|long|2026-10-30 08:10:00|15m": "2026-10-30 08:15:33",
  "BCH/USDT:USDT|short|2026-10-29 06:10:00|15m": "2026-10-29 06:15:47",
  "DOT/USDT:USDT|short|2026-10-27 13:05:00": "2026-10-27 13:11:45",
  "DOT/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:50",
@@ -47,6 +48,7 @@
  "WLD/USDT:USDT|short|2026-10-27 11:15:00": "2026-10-27 11:20:52",
  "WLD/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:26:00",
  "XLM/USDT:USDT|long|2026-10-28 22:30:00": "2026-10-28 22:35:13",
+ "XLM/USDT:USDT|long|2026-10-30 08:20:00": "2026-10-30 08:25:47",
  "XRP/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:35",
  "XRP/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
  "__miss__": {
@@ -102,6 +104,7 @@
   "15m|BNB|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|BNB|long|2026-10-29 18:30:00": "kein Schluss",
   "15m|BNB|long|2026-10-29 20:45:00": "kein Schluss",
+  "15m|BNB|long|2026-10-30 07:45:00": "kein Schluss",
   "15m|BNB|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|BNB|short|2026-10-30 02:30:00": "kein Schluss",
   "15m|BNB|short|2026-10-30 05:00:00": "kein Schluss",
@@ -232,6 +235,7 @@
   "15m|SOL|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|SOL|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|SOL|long|2026-10-30 00:00:00": "kein Schluss",
+  "15m|SOL|long|2026-10-30 07:45:00": "kein Schluss",
   "15m|SOL|short|2026-10-29 13:15:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-30 03:00:00": "kein Schluss",
@@ -266,6 +270,7 @@
   "15m|XLM|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|XLM|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|XLM|long|2026-10-29 20:45:00": "kein Schluss",
+  "15m|XLM|long|2026-10-30 08:00:00": "Qualitaet unter 3 von 5",
   "15m|XLM|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|XLM|short|2026-10-29 13:15:00": "Qualitaet unter 3 von 5",
   "15m|XLM|short|2026-10-29 14:30:00": "Qualitaet unter 3 von 5",
@@ -289,6 +294,7 @@
   "5m|AAVE|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|AAVE|long|2026-10-30 00:20:00": "kein Schluss",
   "5m|AAVE|long|2026-10-30 07:20:00": "kein Schluss",
+  "5m|AAVE|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|AAVE|short|2026-10-29 15:45:00": "kein Schluss",
   "5m|AAVE|short|2026-10-30 03:40:00": "kein Schluss",
   "5m|AAVE|short|2026-10-30 05:00:00": "kein Schluss",
@@ -346,6 +352,7 @@
   "5m|AVAX|long|2026-10-29 23:45:00": "kein Schluss",
   "5m|AVAX|long|2026-10-30 00:10:00": "kein Schluss",
   "5m|AVAX|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|AVAX|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|AVAX|short|2026-10-29 12:50:00": "kein Schluss",
   "5m|AVAX|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|AVAX|short|2026-10-29 13:55:00": "kein Schluss",
@@ -384,6 +391,7 @@
   "5m|BTC|long|2026-10-30 00:20:00": "kein Schluss",
   "5m|BTC|long|2026-10-30 00:30:00": "kein Schluss",
   "5m|BTC|long|2026-10-30 01:30:00": "kein Schluss",
+  "5m|BTC|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 13:55:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 15:45:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 16:05:00": "15m-Trend blockt",
@@ -398,6 +406,7 @@
   "5m|DOGE|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|DOGE|long|2026-10-30 00:20:00": "kein Schluss",
   "5m|DOGE|long|2026-10-30 07:25:00": "kein Schluss",
+  "5m|DOGE|long|2026-10-30 08:00:00": "kein Schluss",
   "5m|DOGE|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|DOGE|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|DOGE|short|2026-10-29 13:55:00": "kein Schluss",
@@ -432,6 +441,7 @@
   "5m|ENA|long|2026-10-29 23:05:00": "kein Schluss",
   "5m|ENA|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|ENA|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|ENA|long|2026-10-30 08:05:00": "kein Ziel mit CRV >= 1",
   "5m|ENA|short|2026-10-29 14:35:00": "kein Schluss",
   "5m|ENA|short|2026-10-29 15:30:00": "kein Schluss",
   "5m|ENA|short|2026-10-29 16:25:00": "kein Schluss",
@@ -451,6 +461,7 @@
   "5m|ETC|long|2026-10-30 00:10:00": "kein Schluss",
   "5m|ETC|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|ETC|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|ETC|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|ETC|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|ETC|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|ETC|short|2026-10-29 15:45:00": "kein Schluss",
@@ -469,6 +480,7 @@
   "5m|ETH|long|2026-10-30 00:20:00": "kein Schluss",
   "5m|ETH|long|2026-10-30 01:30:00": "kein Schluss",
   "5m|ETH|long|2026-10-30 06:00:00": "15m-Trend blockt",
+  "5m|ETH|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|ETH|short|2026-10-29 13:15:00": "15m-Trend blockt",
   "5m|ETH|short|2026-10-29 15:45:00": "kein Schluss",
   "5m|ETH|short|2026-10-29 19:50:00": "kein Ziel mit CRV >= 1",
@@ -524,6 +536,7 @@
   "5m|INJ|long|2026-10-30 00:30:00": "kein Schluss",
   "5m|INJ|long|2026-10-30 05:55:00": "kein Schluss",
   "5m|INJ|long|2026-10-30 07:10:00": "kein Schluss",
+  "5m|INJ|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|INJ|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|INJ|short|2026-10-29 14:15:00": "kein Schluss",
   "5m|INJ|short|2026-10-29 14:35:00": "kein Schluss",
@@ -542,6 +555,7 @@
   "5m|LINK|long|2026-10-29 23:40:00": "kein Schluss",
   "5m|LINK|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|LINK|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|LINK|long|2026-10-30 08:05:00": "kein Ziel mit CRV >= 1",
   "5m|LINK|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|LINK|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|LINK|short|2026-10-29 13:15:00": "kein Schluss",
@@ -559,6 +573,7 @@
   "5m|LTC|long|2026-10-30 00:10:00": "kein Schluss",
   "5m|LTC|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|LTC|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|LTC|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|LTC|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|LTC|short|2026-10-29 15:35:00": "kein Schluss",
   "5m|LTC|short|2026-10-29 15:55:00": "kein Schluss",
@@ -601,6 +616,8 @@
   "5m|ONDO|long|2026-10-29 23:45:00": "kein Schluss",
   "5m|ONDO|long|2026-10-30 00:20:00": "kein Schluss",
   "5m|ONDO|long|2026-10-30 06:00:00": "Kurs schon zu weit weggelaufen",
+  "5m|ONDO|long|2026-10-30 08:00:00": "kein Schluss",
+  "5m|ONDO|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|ONDO|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|ONDO|short|2026-10-29 14:10:00": "kein Schluss",
   "5m|ONDO|short|2026-10-30 02:25:00": "kein Schluss",
@@ -620,6 +637,7 @@
   "5m|SOL|long|2026-10-30 00:10:00": "kein Schluss",
   "5m|SOL|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|SOL|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|SOL|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|SOL|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|SOL|short|2026-10-29 13:15:00": "15m-Trend blockt",
   "5m|SOL|short|2026-10-29 15:10:00": "kein Schluss",
@@ -635,6 +653,7 @@
   "5m|SUI|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|SUI|long|2026-10-30 00:20:00": "kein Schluss",
   "5m|SUI|long|2026-10-30 06:00:00": "Kurs schon zu weit weggelaufen",
+  "5m|SUI|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|SUI|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|SUI|short|2026-10-29 13:55:00": "kein Schluss",
   "5m|SUI|short|2026-10-29 14:10:00": "kein Schluss",
@@ -662,6 +681,7 @@
   "5m|UNI|long|2026-10-29 21:50:00": "kein Schluss",
   "5m|UNI|long|2026-10-30 00:15:00": "kein Schluss",
   "5m|UNI|long|2026-10-30 00:20:00": "kein Schluss",
+  "5m|UNI|long|2026-10-30 08:05:00": "kein Schluss",
   "5m|UNI|short|2026-10-29 13:15:00": "15m-Trend blockt",
   "5m|UNI|short|2026-10-30 01:15:00": "kein Schluss",
   "5m|UNI|short|2026-10-30 02:30:00": "kein Schluss",
@@ -721,17 +741,18 @@
   "5m|XRP|long|2026-10-30 00:30:00": "kein Schluss",
   "5m|XRP|long|2026-10-30 01:30:00": "kein Schluss",
   "5m|XRP|long|2026-10-30 07:25:00": "kein Schluss",
+  "5m|XRP|long|2026-10-30 08:05:00": "15m-Trend blockt",
   "5m|XRP|short|2026-10-30 04:30:00": "kein Schluss",
   "5m|XRP|short|2026-10-30 06:30:00": "kein Schluss"
  },
  "__recent__": [
   [
    "long",
-   "2026-10-30 06:10:17"
+   "2026-10-30 08:15:33"
   ],
   [
    "long",
-   "2026-10-30 06:20:31"
+   "2026-10-30 08:25:47"
   ]
  ],
  "__shadow__": {
@@ -866,6 +887,19 @@
    "sym": "BCH/USDT:USDT",
    "tp": 293.13,
    "ts": "2026-10-29 18:50:00",
+   "v": "15m"
+  },
+  "15m|BCH/USDT:USDT|long|2026-10-30 08:10:00": {
+   "entry": 283.04,
+   "fee_r": 0.13693551313322472,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0643659161005259,
+   "side": "long",
+   "sl": 280.55965,
+   "sym": "BCH/USDT:USDT",
+   "tp": 285.68,
+   "ts": "2026-10-30 08:10:00",
    "v": "15m"
   },
   "15m|BCH/USDT:USDT|short|2026-10-29 06:10:00": {
@@ -1852,6 +1886,19 @@
    "ts": "2026-10-28 22:30:00",
    "v": "conf5"
   },
+  "conf5|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
+   "v": "conf5"
+  },
   "notrend|AAVE/USDT:USDT|short|2026-10-29 12:00:00": {
    "entry": 132.56,
    "fee_r": 0.12265603614787836,
@@ -1974,7 +2021,9 @@
    "entry": 0.946,
    "fee_r": 0.11977842257979528,
    "r": 0.0,
+   "r30": -0.11977842257979528,
    "res": null,
+   "res30": "T",
    "rr": 3.3764178317066946,
    "side": "short",
    "sl": 0.9554774999999999,
@@ -2282,6 +2331,19 @@
    "ts": "2026-10-28 22:30:00",
    "v": "notrend"
   },
+  "notrend|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
+   "v": "notrend"
+  },
   "notrend|XLM/USDT:USDT|short|2026-10-27 01:20:00": {
    "entry": 0.16896,
    "fee_r": 0.20378416680487185,
@@ -2314,7 +2376,9 @@
    "entry": 0.946,
    "fee_r": 0.11977842257979528,
    "r": 0.0,
+   "r30": -0.11977842257979528,
    "res": null,
+   "res30": "T",
    "rr": 3.3764178317066946,
    "side": "short",
    "sl": 0.9554774999999999,
@@ -2470,9 +2534,9 @@
   "score2|ETH/USDT:USDT|short|2026-10-30 06:45:00": {
    "entry": 2245.1,
    "fee_r": 0.20694558011506248,
-   "r": 0.0,
+   "r": 1.2532846538712819,
    "r30": -0.5456944139856732,
-   "res": null,
+   "res": "TP",
    "res30": "T",
    "rr": 1.4602302339863442,
    "side": "short",
@@ -2656,6 +2720,19 @@
    "ts": "2026-10-28 22:30:00",
    "v": "score2"
   },
+  "score2|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
+   "v": "score2"
+  },
   "vsbtc|AAVE/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 135.38,
    "fee_r": 0.04807322128992451,
@@ -2729,6 +2806,19 @@
    "sym": "BCH/USDT:USDT",
    "tp": 284.7293692899225,
    "ts": "2026-10-29 08:10:00",
+   "v": "vsbtc"
+  },
+  "vsbtc|BCH/USDT:USDT|long|2026-10-30 08:10:00": {
+   "entry": 283.04,
+   "fee_r": 0.13693551313322472,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0643659161005259,
+   "side": "long",
+   "sl": 280.55965,
+   "sym": "BCH/USDT:USDT",
+   "tp": 285.68,
+   "ts": "2026-10-30 08:10:00",
    "v": "vsbtc"
   },
   "vsbtc|DOT/USDT:USDT|short|2026-10-28 20:20:00": {
@@ -2999,6 +3089,19 @@
    "sym": "WLD/USDT:USDT",
    "tp": 0.422,
    "ts": "2026-10-28 20:20:00",
+   "v": "vsbtc"
+  },
+  "vsbtc|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
    "v": "vsbtc"
   },
   "vsbtc|XRP/USDT:USDT|short|2026-10-28 20:15:00": {
@@ -3349,6 +3452,19 @@
    "ts": "2026-10-28 22:30:00",
    "v": "w30"
   },
+  "w30|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
+   "v": "w30"
+  },
   "w40|AAVE/USDT:USDT|short|2026-10-30 01:50:00": {
    "entry": 118.96,
    "fee_r": 0.1041882734183135,
@@ -3637,6 +3753,19 @@
    "ts": "2026-10-28 22:30:00",
    "v": "w40"
   },
+  "w40|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
+   "v": "w40"
+  },
   "w50|ARB/USDT:USDT|long|2026-10-27 19:40:00": {
    "entry": 0.1683,
    "fee_r": 0.25766777239091565,
@@ -3794,6 +3923,19 @@
    "ts": "2026-10-27 11:15:00",
    "v": "w50"
   },
+  "w50|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
+   "v": "w50"
+  },
   "w60|ARB/USDT:USDT|long|2026-10-27 19:40:00": {
    "entry": 0.1683,
    "fee_r": 0.25766777239091565,
@@ -3908,6 +4050,19 @@
    "sym": "WLD/USDT:USDT",
    "tp": 0.4264,
    "ts": "2026-10-27 11:15:00",
+   "v": "w60"
+  },
+  "w60|XLM/USDT:USDT|long|2026-10-30 08:20:00": {
+   "entry": 0.16642,
+   "fee_r": 0.14986211010929915,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.1931696664752969,
+   "side": "long",
+   "sl": 0.16508741500000002,
+   "sym": "XLM/USDT:USDT",
+   "tp": 0.16801,
+   "ts": "2026-10-30 08:20:00",
    "v": "w60"
   }
  },
