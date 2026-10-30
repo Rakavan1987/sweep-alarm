@@ -20,6 +20,7 @@
  "ENA/USDT:USDT|long|2026-10-29 17:20:00": "2026-10-29 17:25:26",
  "ENA/USDT:USDT|short|2026-10-29 09:25:00": "2026-10-29 09:30:34",
  "ENA/USDT:USDT|short|2026-10-30 04:00:00|15m": "2026-10-30 04:05:06",
+ "ENA/USDT:USDT|short|2026-10-30 08:30:00|15m": "2026-10-30 08:36:03",
  "ETC/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:56",
  "ETH/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:32",
  "ETH/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
@@ -58,6 +59,7 @@
   "15m|AAVE|long|2026-10-29 22:00:00": "kein Schluss",
   "15m|AAVE|long|2026-10-29 22:15:00": "kein Schluss",
   "15m|AAVE|long|2026-10-29 23:00:00": "kein Schluss",
+  "15m|AAVE|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|AAVE|short|2026-10-29 11:45:00": "Bestaetigung schon zu alt",
   "15m|AAVE|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|AAVE|short|2026-10-30 03:45:00": "kein Schluss",
@@ -88,6 +90,7 @@
   "15m|AVAX|long|2026-10-29 23:00:00": "kein Schluss",
   "15m|AVAX|long|2026-10-29 23:45:00": "kein Schluss",
   "15m|AVAX|long|2026-10-30 00:00:00": "kein Schluss",
+  "15m|AVAX|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|AVAX|short|2026-10-29 13:45:00": "kein Schluss",
   "15m|AVAX|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|AVAX|short|2026-10-30 03:00:00": "kein Schluss",
@@ -100,6 +103,7 @@
   "15m|BCH|long|2026-10-30 00:00:00": "kein Schluss",
   "15m|BCH|long|2026-10-30 00:30:00": "kein Schluss",
   "15m|BCH|long|2026-10-30 06:45:00": "Qualitaet unter 3 von 5",
+  "15m|BCH|long|2026-10-30 07:45:00": "Bestaetigung schon zu alt",
   "15m|BCH|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|BNB|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|BNB|long|2026-10-29 18:30:00": "kein Schluss",
@@ -166,6 +170,7 @@
   "15m|ETH|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|ETH|long|2026-10-30 00:00:00": "kein Schluss",
   "15m|ETH|long|2026-10-30 01:30:00": "kein Schluss",
+  "15m|ETH|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|ETH|short|2026-10-29 16:00:00": "Bestaetigung schon zu alt",
   "15m|ETH|short|2026-10-30 06:30:00": "Qualitaet unter 3 von 5",
   "15m|FIL|long|2026-10-29 17:15:00": "kein Schluss",
@@ -192,6 +197,7 @@
   "15m|INJ|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|INJ|long|2026-10-29 23:45:00": "kein Schluss",
   "15m|INJ|long|2026-10-30 00:30:00": "kein Schluss",
+  "15m|INJ|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|INJ|short|2026-10-29 14:00:00": "kein Schluss",
   "15m|INJ|short|2026-10-29 14:15:00": "kein Schluss",
   "15m|INJ|short|2026-10-29 14:30:00": "Bestaetigung schon zu alt",
@@ -209,6 +215,7 @@
   "15m|LTC|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|LTC|long|2026-10-29 18:30:00": "kein Schluss",
   "15m|LTC|long|2026-10-30 00:00:00": "kein Schluss",
+  "15m|LTC|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|LTC|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|LTC|short|2026-10-30 03:00:00": "kein Schluss",
   "15m|NEAR|long|2026-10-29 17:45:00": "kein Schluss",
@@ -222,11 +229,13 @@
   "15m|NEAR|short|2026-10-29 15:30:00": "kein Schluss",
   "15m|NEAR|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|NEAR|short|2026-10-30 04:45:00": "kein Schluss",
+  "15m|NEAR|short|2026-10-30 08:15:00": "kein Schluss",
   "15m|ONDO|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|ONDO|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|ONDO|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|ONDO|long|2026-10-29 23:00:00": "kein Schluss",
   "15m|ONDO|long|2026-10-29 23:45:00": "kein Schluss",
+  "15m|ONDO|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 15:45:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 16:00:00": "kein Schluss",
@@ -236,6 +245,7 @@
   "15m|SOL|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|SOL|long|2026-10-30 00:00:00": "kein Schluss",
   "15m|SOL|long|2026-10-30 07:45:00": "kein Schluss",
+  "15m|SOL|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|SOL|short|2026-10-29 13:15:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-30 03:00:00": "kein Schluss",
@@ -244,6 +254,7 @@
   "15m|SUI|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|SUI|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|SUI|long|2026-10-30 00:00:00": "kein Schluss",
+  "15m|SUI|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|SUI|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|SUI|short|2026-10-29 13:45:00": "kein Schluss",
   "15m|SUI|short|2026-10-29 14:15:00": "kein Schluss",
@@ -748,11 +759,11 @@
  "__recent__": [
   [
    "long",
-   "2026-10-30 08:15:33"
+   "2026-10-30 08:25:47"
   ],
   [
-   "long",
-   "2026-10-30 08:25:47"
+   "short",
+   "2026-10-30 08:36:03"
   ]
  ],
  "__shadow__": {
@@ -892,8 +903,10 @@
   "15m|BCH/USDT:USDT|long|2026-10-30 08:10:00": {
    "entry": 283.04,
    "fee_r": 0.13693551313322472,
-   "r": 0.0,
-   "res": null,
+   "r": -1.1369355131332246,
+   "r30": -1.1369355131332246,
+   "res": "SL",
+   "res30": "SL",
    "rr": 1.0643659161005259,
    "side": "long",
    "sl": 280.55965,
@@ -984,6 +997,19 @@
    "sym": "ENA/USDT:USDT",
    "tp": 0.1736,
    "ts": "2026-10-30 04:00:00",
+   "v": "15m"
+  },
+  "15m|ENA/USDT:USDT|short|2026-10-30 08:30:00": {
+   "entry": 0.1892,
+   "fee_r": 0.09889793962625969,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.5245894498410375,
+   "side": "short",
+   "sl": 0.19149569999999996,
+   "sym": "ENA/USDT:USDT",
+   "tp": 0.1857,
+   "ts": "2026-10-30 08:30:00",
    "v": "15m"
   },
   "15m|ETC/USDT:USDT|short|2026-10-28 20:20:00": {
@@ -1476,6 +1502,19 @@
    "sym": "ENA/USDT:USDT",
    "tp": 0.1736,
    "ts": "2026-10-30 04:00:00",
+   "v": "btc"
+  },
+  "btc|ENA/USDT:USDT|short|2026-10-30 08:30:00": {
+   "entry": 0.1892,
+   "fee_r": 0.09889793962625969,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.5245894498410375,
+   "side": "short",
+   "sl": 0.19149569999999996,
+   "sym": "ENA/USDT:USDT",
+   "tp": 0.1857,
+   "ts": "2026-10-30 08:30:00",
    "v": "btc"
   },
   "btc|NEAR/USDT:USDT|short|2026-10-29 13:30:00": {
@@ -2450,9 +2489,9 @@
   "score2|DOT/USDT:USDT|long|2026-10-30 06:25:00": {
    "entry": 0.947,
    "fee_r": 0.15212851405622538,
-   "r": 0.0,
+   "r": -1.1521285140562254,
    "r30": 0.3833467202141917,
-   "res": null,
+   "res": "SL",
    "res30": "T",
    "rr": 1.2048192771084385,
    "side": "long",
@@ -2811,8 +2850,10 @@
   "vsbtc|BCH/USDT:USDT|long|2026-10-30 08:10:00": {
    "entry": 283.04,
    "fee_r": 0.13693551313322472,
-   "r": 0.0,
-   "res": null,
+   "r": -1.1369355131332246,
+   "r30": -1.1369355131332246,
+   "res": "SL",
+   "res30": "SL",
    "rr": 1.0643659161005259,
    "side": "long",
    "sl": 280.55965,
