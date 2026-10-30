@@ -1,4 +1,5 @@
 {
+ "AAVE/USDT:USDT|long|2026-10-30 18:55:00": "2026-10-30 19:00:42",
  "AAVE/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:56",
  "AAVE/USDT:USDT|short|2026-10-29 12:00:00|15m": "2026-10-29 12:05:44",
  "AAVE/USDT:USDT|short|2026-10-30 01:50:00": "2026-10-30 01:56:11",
@@ -31,6 +32,7 @@
  "INJ/USDT:USDT|long|2026-10-29 12:15:00": "2026-10-29 12:21:09",
  "INJ/USDT:USDT|short|2026-10-28 20:25:00|15m": "2026-10-28 20:31:08",
  "INJ/USDT:USDT|short|2026-10-29 14:55:00|15m": "2026-10-29 15:01:20",
+ "LINK/USDT:USDT|long|2026-10-30 18:55:00": "2026-10-30 19:00:42",
  "LINK/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:47",
  "LINK/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
  "LTC/USDT:USDT|long|2026-10-28 18:00:00": "2026-10-28 18:05:31",
@@ -40,6 +42,7 @@
  "NEAR/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:40",
  "NEAR/USDT:USDT|short|2026-10-29 13:30:00|15m": "2026-10-29 13:35:17",
  "ONDO/USDT:USDT|long|2026-10-30 06:05:00": "2026-10-30 06:10:17",
+ "ONDO/USDT:USDT|long|2026-10-30 18:50:00": "2026-10-30 18:55:30",
  "ONDO/USDT:USDT|short|2026-10-29 08:10:00": "2026-10-29 08:15:20",
  "SOL/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:34",
  "SUI/USDT:USDT|long|2026-10-30 06:15:00": "2026-10-30 06:20:31",
@@ -197,6 +200,7 @@
   "15m|ETC|long|2026-10-30 13:30:00": "Qualitaet unter 3 von 5",
   "15m|ETC|long|2026-10-30 14:15:00": "Qualitaet unter 3 von 5",
   "15m|ETC|long|2026-10-30 17:45:00": "kein Schluss",
+  "15m|ETC|long|2026-10-30 18:30:00": "kein Schluss",
   "15m|ETC|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ETC|short|2026-10-29 13:15:00": "Qualitaet unter 3 von 5",
   "15m|ETC|short|2026-10-29 16:00:00": "kein Schluss",
@@ -223,6 +227,7 @@
   "15m|FIL|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|FIL|long|2026-10-30 09:30:00": "Bestaetigung schon zu alt",
   "15m|FIL|long|2026-10-30 17:45:00": "Bestaetigung schon zu alt",
+  "15m|FIL|long|2026-10-30 18:30:00": "kein Schluss",
   "15m|FIL|short|2026-10-29 12:30:00": "kein Schluss",
   "15m|FIL|short|2026-10-29 16:00:00": "Qualitaet unter 3 von 5",
   "15m|FIL|short|2026-10-30 03:00:00": "kein Schluss",
@@ -260,6 +265,7 @@
   "15m|LINK|long|2026-10-29 23:15:00": "kein Schluss",
   "15m|LINK|long|2026-10-30 09:15:00": "kein Schluss",
   "15m|LINK|long|2026-10-30 13:45:00": "kein Schluss",
+  "15m|LINK|long|2026-10-30 18:45:00": "Qualitaet unter 3 von 5",
   "15m|LINK|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|LINK|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|LINK|short|2026-10-29 16:00:00": "Bestaetigung schon zu alt",
@@ -272,6 +278,7 @@
   "15m|LTC|long|2026-10-30 00:00:00": "kein Schluss",
   "15m|LTC|long|2026-10-30 08:00:00": "kein Schluss",
   "15m|LTC|long|2026-10-30 17:45:00": "kein Schluss",
+  "15m|LTC|long|2026-10-30 18:30:00": "kein Schluss",
   "15m|LTC|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|LTC|short|2026-10-30 03:00:00": "kein Schluss",
   "15m|LTC|short|2026-10-30 15:15:00": "kein Schluss",
@@ -300,6 +307,8 @@
   "15m|ONDO|long|2026-10-30 09:30:00": "kein Schluss",
   "15m|ONDO|long|2026-10-30 09:45:00": "Bestaetigung schon zu alt",
   "15m|ONDO|long|2026-10-30 13:45:00": "kein Ziel mit CRV >= 1",
+  "15m|ONDO|long|2026-10-30 18:30:00": "kein Schluss",
+  "15m|ONDO|long|2026-10-30 18:45:00": "kein Ziel mit CRV >= 1",
   "15m|ONDO|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 15:45:00": "kein Schluss",
   "15m|ONDO|short|2026-10-29 16:00:00": "kein Schluss",
@@ -315,6 +324,8 @@
   "15m|SOL|long|2026-10-30 09:30:00": "kein Schluss",
   "15m|SOL|long|2026-10-30 13:45:00": "kein Schluss",
   "15m|SOL|long|2026-10-30 14:30:00": "kein Schluss",
+  "15m|SOL|long|2026-10-30 18:30:00": "kein Schluss",
+  "15m|SOL|long|2026-10-30 18:45:00": "Qualitaet unter 3 von 5",
   "15m|SOL|short|2026-10-29 13:15:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-30 03:00:00": "kein Schluss",
@@ -341,6 +352,7 @@
   "15m|UNI|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|UNI|long|2026-10-29 22:00:00": "kein Schluss",
   "15m|UNI|long|2026-10-30 13:45:00": "kein Schluss",
+  "15m|UNI|long|2026-10-30 18:30:00": "kein Schluss",
   "15m|UNI|short|2026-10-29 11:45:00": "kein Schluss",
   "15m|UNI|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|UNI|short|2026-10-30 04:45:00": "kein Schluss",
@@ -351,6 +363,7 @@
   "15m|WLD|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|WLD|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|WLD|long|2026-10-30 13:45:00": "kein Schluss",
+  "15m|WLD|long|2026-10-30 18:30:00": "kein Schluss",
   "15m|WLD|short|2026-10-29 16:00:00": "kein Schluss",
   "15m|WLD|short|2026-10-30 03:00:00": "kein Schluss",
   "15m|WLD|short|2026-10-30 10:30:00": "kein Schluss",
@@ -478,6 +491,7 @@
   "5m|AVAX|long|2026-10-30 12:00:00": "kein Schluss",
   "5m|AVAX|long|2026-10-30 12:15:00": "kein Schluss",
   "5m|AVAX|long|2026-10-30 13:50:00": "kein Schluss",
+  "5m|AVAX|long|2026-10-30 18:50:00": "15m-Trend blockt",
   "5m|AVAX|short|2026-10-29 12:50:00": "kein Schluss",
   "5m|AVAX|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|AVAX|short|2026-10-29 13:55:00": "kein Schluss",
@@ -525,6 +539,7 @@
   "5m|BNB|long|2026-10-30 11:55:00": "kein Schluss",
   "5m|BNB|long|2026-10-30 12:40:00": "15m-Trend blockt",
   "5m|BNB|long|2026-10-30 14:15:00": "kein Schluss",
+  "5m|BNB|long|2026-10-30 18:30:00": "kein Schluss",
   "5m|BNB|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|BNB|short|2026-10-30 05:10:00": "kein Schluss",
   "5m|BNB|short|2026-10-30 17:40:00": "kein Schluss",
@@ -545,6 +560,7 @@
   "5m|BTC|long|2026-10-30 13:35:00": "kein Schluss",
   "5m|BTC|long|2026-10-30 13:50:00": "kein Schluss",
   "5m|BTC|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|BTC|long|2026-10-30 18:45:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 13:55:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 15:45:00": "kein Schluss",
   "5m|BTC|short|2026-10-29 16:05:00": "15m-Trend blockt",
@@ -612,6 +628,7 @@
   "5m|ENA|long|2026-10-30 13:30:00": "kein Schluss",
   "5m|ENA|long|2026-10-30 17:20:00": "kein Schluss",
   "5m|ENA|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|ENA|long|2026-10-30 18:45:00": "kein Schluss",
   "5m|ENA|short|2026-10-29 14:35:00": "kein Schluss",
   "5m|ENA|short|2026-10-29 15:30:00": "kein Schluss",
   "5m|ENA|short|2026-10-29 16:25:00": "kein Schluss",
@@ -639,6 +656,7 @@
   "5m|ETC|long|2026-10-30 13:30:00": "kein Schluss",
   "5m|ETC|long|2026-10-30 14:15:00": "kein Schluss",
   "5m|ETC|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|ETC|long|2026-10-30 18:30:00": "kein Schluss",
   "5m|ETC|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|ETC|short|2026-10-29 13:15:00": "kein Schluss",
   "5m|ETC|short|2026-10-29 15:45:00": "kein Schluss",
@@ -805,6 +823,7 @@
   "5m|LTC|long|2026-10-30 11:55:00": "kein Schluss",
   "5m|LTC|long|2026-10-30 17:40:00": "kein Schluss",
   "5m|LTC|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|LTC|long|2026-10-30 18:30:00": "kein Schluss",
   "5m|LTC|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|LTC|short|2026-10-29 15:35:00": "kein Schluss",
   "5m|LTC|short|2026-10-29 15:55:00": "kein Schluss",
@@ -839,6 +858,8 @@
   "5m|NEAR|long|2026-10-30 12:45:00": "kein Schluss",
   "5m|NEAR|long|2026-10-30 15:45:00": "kein Schluss",
   "5m|NEAR|long|2026-10-30 17:20:00": "kein Schluss",
+  "5m|NEAR|long|2026-10-30 18:30:00": "kein Schluss",
+  "5m|NEAR|long|2026-10-30 18:50:00": "15m-Trend blockt",
   "5m|NEAR|short|2026-10-29 12:45:00": "kein Schluss",
   "5m|NEAR|short|2026-10-29 13:15:00": "15m-Trend blockt",
   "5m|NEAR|short|2026-10-29 15:55:00": "kein Schluss",
@@ -892,6 +913,7 @@
   "5m|SOL|long|2026-10-30 17:35:00": "kein Schluss",
   "5m|SOL|long|2026-10-30 17:50:00": "kein Schluss",
   "5m|SOL|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|SOL|long|2026-10-30 18:50:00": "15m-Trend blockt",
   "5m|SOL|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|SOL|short|2026-10-29 13:15:00": "15m-Trend blockt",
   "5m|SOL|short|2026-10-29 15:10:00": "kein Schluss",
@@ -956,6 +978,7 @@
   "5m|UNI|long|2026-10-30 13:40:00": "kein Schluss",
   "5m|UNI|long|2026-10-30 13:45:00": "kein Schluss",
   "5m|UNI|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|UNI|long|2026-10-30 18:30:00": "kein Schluss",
   "5m|UNI|short|2026-10-29 13:15:00": "15m-Trend blockt",
   "5m|UNI|short|2026-10-30 01:15:00": "kein Schluss",
   "5m|UNI|short|2026-10-30 02:30:00": "kein Schluss",
@@ -1013,6 +1036,7 @@
   "5m|XLM|long|2026-10-30 17:30:00": "kein Schluss",
   "5m|XLM|long|2026-10-30 17:35:00": "kein Schluss",
   "5m|XLM|long|2026-10-30 18:20:00": "kein Schluss",
+  "5m|XLM|long|2026-10-30 18:30:00": "kein Schluss",
   "5m|XLM|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|XLM|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|XLM|short|2026-10-29 13:15:00": "kein Schluss",
@@ -1055,7 +1079,15 @@
  "__recent__": [
   [
    "long",
-   "2026-10-30 18:15:37"
+   "2026-10-30 18:55:30"
+  ],
+  [
+   "long",
+   "2026-10-30 19:00:42"
+  ],
+  [
+   "long",
+   "2026-10-30 19:00:42"
   ]
  ],
  "__shadow__": {
@@ -1993,6 +2025,19 @@
    "ts": "2026-10-28 11:45:00",
    "v": "conf5"
   },
+  "conf5|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "conf5"
+  },
   "conf5|AAVE/USDT:USDT|short|2026-10-30 01:50:00": {
    "entry": 118.96,
    "fee_r": 0.1041882734183135,
@@ -2255,6 +2300,19 @@
    "ts": "2026-10-29 12:15:00",
    "v": "conf5"
   },
+  "conf5|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
+   "v": "conf5"
+  },
   "conf5|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
    "entry": 58.85,
    "fee_r": 0.14435961119798996,
@@ -2326,6 +2384,19 @@
    "sym": "ONDO/USDT:USDT",
    "tp": 0.3957,
    "ts": "2026-10-30 06:05:00",
+   "v": "conf5"
+  },
+  "conf5|ONDO/USDT:USDT|long|2026-10-30 18:50:00": {
+   "entry": 0.3974,
+   "fee_r": 0.0917747584773501,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.231669296793831,
+   "side": "long",
+   "sl": 0.39220380000000005,
+   "sym": "ONDO/USDT:USDT",
+   "tp": 0.4038,
+   "ts": "2026-10-30 18:50:00",
    "v": "conf5"
   },
   "conf5|ONDO/USDT:USDT|short|2026-10-29 08:10:00": {
@@ -2445,6 +2516,19 @@
    "tp": 0.16801,
    "ts": "2026-10-30 08:20:00",
    "v": "conf5"
+  },
+  "notrend|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "notrend"
   },
   "notrend|AAVE/USDT:USDT|short|2026-10-29 12:00:00": {
    "entry": 132.56,
@@ -2734,6 +2818,19 @@
    "ts": "2026-10-29 12:15:00",
    "v": "notrend"
   },
+  "notrend|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
+   "v": "notrend"
+  },
   "notrend|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
    "entry": 58.85,
    "fee_r": 0.14435961119798996,
@@ -2794,6 +2891,19 @@
    "ts": "2026-10-30 09:35:00",
    "v": "notrend"
   },
+  "notrend|NEAR/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 4.274,
+   "fee_r": 0.11368155068657204,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.6623998404096325,
+   "side": "long",
+   "sl": 4.2288845,
+   "sym": "NEAR/USDT:USDT",
+   "tp": 4.349,
+   "ts": "2026-10-30 18:55:00",
+   "v": "notrend"
+  },
   "notrend|NEAR/USDT:USDT|short|2026-10-27 01:50:00": {
    "entry": 4.475,
    "fee_r": 0.11865043416779057,
@@ -2837,6 +2947,19 @@
    "ts": "2026-10-30 06:05:00",
    "v": "notrend"
   },
+  "notrend|ONDO/USDT:USDT|long|2026-10-30 18:50:00": {
+   "entry": 0.3974,
+   "fee_r": 0.0917747584773501,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.231669296793831,
+   "side": "long",
+   "sl": 0.39220380000000005,
+   "sym": "ONDO/USDT:USDT",
+   "tp": 0.4038,
+   "ts": "2026-10-30 18:50:00",
+   "v": "notrend"
+  },
   "notrend|ONDO/USDT:USDT|short|2026-10-29 08:10:00": {
    "entry": 0.4061,
    "fee_r": 0.25595882136667397,
@@ -2865,6 +2988,19 @@
    "sym": "SOL/USDT:USDT",
    "tp": 102.89,
    "ts": "2026-10-28 16:50:00",
+   "v": "notrend"
+  },
+  "notrend|SOL/USDT:USDT|long|2026-10-30 19:00:00": {
+   "entry": 94.28,
+   "fee_r": 0.14949556346914755,
+   "r": 0.0,
+   "res": null,
+   "rr": 2.2909708609426795,
+   "side": "long",
+   "sl": 93.523215,
+   "sym": "SOL/USDT:USDT",
+   "tp": 96.01377238299852,
+   "ts": "2026-10-30 19:00:00",
    "v": "notrend"
   },
   "notrend|SUI/USDT:USDT|long|2026-10-30 06:15:00": {
@@ -2972,7 +3108,9 @@
    "entry": 0.4098,
    "fee_r": 0.05458359694981854,
    "r": 0.0,
+   "r30": 0.6890923823160495,
    "res": null,
+   "res30": "T",
    "rr": 1.6982451466817603,
    "side": "short",
    "sl": 0.4188093,
@@ -3068,6 +3206,19 @@
    "tp": 0.914,
    "ts": "2026-10-30 07:35:00",
    "v": "rev"
+  },
+  "score2|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "score2"
   },
   "score2|AAVE/USDT:USDT|short|2026-10-30 01:50:00": {
    "entry": 118.96,
@@ -3301,6 +3452,19 @@
    "ts": "2026-10-30 13:35:00",
    "v": "score2"
   },
+  "score2|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
+   "v": "score2"
+  },
   "score2|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
    "entry": 58.85,
    "fee_r": 0.14435961119798996,
@@ -3402,6 +3566,19 @@
    "sym": "ONDO/USDT:USDT",
    "tp": 0.4017,
    "ts": "2026-10-30 17:35:00",
+   "v": "score2"
+  },
+  "score2|ONDO/USDT:USDT|long|2026-10-30 18:50:00": {
+   "entry": 0.3974,
+   "fee_r": 0.0917747584773501,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.231669296793831,
+   "side": "long",
+   "sl": 0.39220380000000005,
+   "sym": "ONDO/USDT:USDT",
+   "tp": 0.4038,
+   "ts": "2026-10-30 18:50:00",
    "v": "score2"
   },
   "score2|ONDO/USDT:USDT|short|2026-10-29 08:10:00": {
@@ -3536,6 +3713,19 @@
    "tp": 0.16801,
    "ts": "2026-10-30 08:20:00",
    "v": "score2"
+  },
+  "vsbtc|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "vsbtc"
   },
   "vsbtc|AAVE/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 135.38,
@@ -3777,6 +3967,19 @@
    "ts": "2026-10-29 14:55:00",
    "v": "vsbtc"
   },
+  "vsbtc|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
+   "v": "vsbtc"
+  },
   "vsbtc|LINK/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 11.757,
    "fee_r": 0.057585776210417876,
@@ -4002,6 +4205,19 @@
    "ts": "2026-10-29 16:15:00",
    "v": "vsbtc"
   },
+  "w30|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "w30"
+  },
   "w30|AAVE/USDT:USDT|short|2026-10-30 01:50:00": {
    "entry": 118.96,
    "fee_r": 0.1041882734183135,
@@ -4060,6 +4276,19 @@
    "sym": "BCH/USDT:USDT",
    "tp": 293.48,
    "ts": "2026-10-27 19:45:00",
+   "v": "w30"
+  },
+  "w30|DOT/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 0.958,
+   "fee_r": 0.15378235569527188,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.6052437964015867,
+   "side": "long",
+   "sl": 0.9505245,
+   "sym": "DOT/USDT:USDT",
+   "tp": 0.97,
+   "ts": "2026-10-30 18:55:00",
    "v": "w30"
   },
   "w30|DOT/USDT:USDT|short|2026-10-27 13:05:00": {
@@ -4204,6 +4433,19 @@
    "ts": "2026-10-28 23:05:00",
    "v": "w30"
   },
+  "w30|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
+   "v": "w30"
+  },
   "w30|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
    "entry": 58.85,
    "fee_r": 0.14435961119798996,
@@ -4275,6 +4517,19 @@
    "sym": "ONDO/USDT:USDT",
    "tp": 0.3957,
    "ts": "2026-10-30 06:05:00",
+   "v": "w30"
+  },
+  "w30|ONDO/USDT:USDT|long|2026-10-30 18:50:00": {
+   "entry": 0.3974,
+   "fee_r": 0.0917747584773501,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.231669296793831,
+   "side": "long",
+   "sl": 0.39220380000000005,
+   "sym": "ONDO/USDT:USDT",
+   "tp": 0.4038,
+   "ts": "2026-10-30 18:50:00",
    "v": "w30"
   },
   "w30|ONDO/USDT:USDT|short|2026-10-29 08:10:00": {
@@ -4424,6 +4679,19 @@
    "tp": 0.17226,
    "ts": "2026-10-30 16:40:00",
    "v": "w30"
+  },
+  "w40|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "w40"
   },
   "w40|AAVE/USDT:USDT|short|2026-10-30 01:50:00": {
    "entry": 118.96,
@@ -4612,6 +4880,19 @@
    "ts": "2026-10-29 12:15:00",
    "v": "w40"
   },
+  "w40|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
+   "v": "w40"
+  },
   "w40|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
    "entry": 58.85,
    "fee_r": 0.14435961119798996,
@@ -4683,6 +4964,19 @@
    "sym": "ONDO/USDT:USDT",
    "tp": 0.3957,
    "ts": "2026-10-30 06:05:00",
+   "v": "w40"
+  },
+  "w40|ONDO/USDT:USDT|long|2026-10-30 18:50:00": {
+   "entry": 0.3974,
+   "fee_r": 0.0917747584773501,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.231669296793831,
+   "side": "long",
+   "sl": 0.39220380000000005,
+   "sym": "ONDO/USDT:USDT",
+   "tp": 0.4038,
+   "ts": "2026-10-30 18:50:00",
    "v": "w40"
   },
   "w40|ONDO/USDT:USDT|short|2026-10-29 08:10:00": {
@@ -4788,6 +5082,19 @@
    "ts": "2026-10-30 08:20:00",
    "v": "w40"
   },
+  "w50|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "w50"
+  },
   "w50|ARB/USDT:USDT|long|2026-10-27 19:40:00": {
    "entry": 0.1683,
    "fee_r": 0.25766777239091565,
@@ -4872,6 +5179,19 @@
    "sym": "HBAR/USDT:USDT",
    "tp": 0.07243,
    "ts": "2026-10-30 12:55:00",
+   "v": "w50"
+  },
+  "w50|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
    "v": "w50"
   },
   "w50|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
@@ -5005,6 +5325,19 @@
    "ts": "2026-10-30 08:20:00",
    "v": "w50"
   },
+  "w60|AAVE/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 125.95,
+   "fee_r": 0.1383483148124431,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.0069018545301485,
+   "side": "long",
+   "sl": 124.85754000000001,
+   "sym": "AAVE/USDT:USDT",
+   "tp": 127.05,
+   "ts": "2026-10-30 18:55:00",
+   "v": "w60"
+  },
   "w60|ARB/USDT:USDT|long|2026-10-27 19:40:00": {
    "entry": 0.1683,
    "fee_r": 0.25766777239091565,
@@ -5063,6 +5396,19 @@
    "sym": "HBAR/USDT:USDT",
    "tp": 0.07243,
    "ts": "2026-10-30 12:55:00",
+   "v": "w60"
+  },
+  "w60|LINK/USDT:USDT|long|2026-10-30 18:55:00": {
+   "entry": 11.179,
+   "fee_r": 0.14815289297270898,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.2148387025522485,
+   "side": "long",
+   "sl": 11.088453,
+   "sym": "LINK/USDT:USDT",
+   "tp": 11.289,
+   "ts": "2026-10-30 18:55:00",
    "v": "w60"
   },
   "w60|LTC/USDT:USDT|long|2026-10-28 18:00:00": {
