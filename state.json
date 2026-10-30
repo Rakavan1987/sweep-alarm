@@ -24,6 +24,7 @@
  "ETH/USDT:USDT|short|2026-10-29 16:15:00|15m": "2026-10-29 16:21:02",
  "FIL/USDT:USDT|long|2026-10-30 13:50:00": "2026-10-30 13:56:21",
  "FIL/USDT:USDT|long|2026-10-30 18:10:00|15m": "2026-10-30 18:15:37",
+ "FIL/USDT:USDT|long|2026-10-30 20:55:00|15m": "2026-10-30 21:00:27",
  "FIL/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:25:58",
  "FIL/USDT:USDT|short|2026-10-30 13:40:00|15m": "2026-10-30 13:46:04",
  "HBAR/USDT:USDT|long|2026-10-30 12:55:00": "2026-10-30 13:01:07",
@@ -49,6 +50,7 @@
  "UNI/USDT:USDT|short|2026-10-28 20:15:00|15m": "2026-10-28 20:20:42",
  "WLD/USDT:USDT|long|2026-10-28 23:10:00": "2026-10-28 23:16:19",
  "WLD/USDT:USDT|long|2026-10-30 12:45:00": "2026-10-30 12:50:48",
+ "WLD/USDT:USDT|long|2026-10-30 20:55:00|15m": "2026-10-30 21:00:27",
  "WLD/USDT:USDT|short|2026-10-28 20:20:00|15m": "2026-10-28 20:26:00",
  "WLD/USDT:USDT|short|2026-10-30 11:55:00|15m": "2026-10-30 12:00:36",
  "XLM/USDT:USDT|long|2026-10-28 22:30:00": "2026-10-28 22:35:13",
@@ -106,6 +108,7 @@
   "15m|ATOM|long|2026-10-29 20:45:00": "kein Schluss",
   "15m|ATOM|short|2026-10-30 15:15:00": "Bestaetigung schon zu alt",
   "15m|ATOM|short|2026-10-30 20:00:00": "kein Schluss",
+  "15m|ATOM|short|2026-10-30 20:30:00": "kein Schluss",
   "15m|AVAX|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|AVAX|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|AVAX|long|2026-10-29 20:45:00": "kein Schluss",
@@ -350,6 +353,7 @@
   "15m|SOL|short|2026-10-29 16:00:00": "Kurs schon zu weit weggelaufen",
   "15m|SOL|short|2026-10-30 03:00:00": "kein Schluss",
   "15m|SOL|short|2026-10-30 04:15:00": "kein Schluss",
+  "15m|SOL|short|2026-10-30 20:30:00": "kein Schluss",
   "15m|SUI|long|2026-10-29 17:45:00": "kein Schluss",
   "15m|SUI|long|2026-10-29 20:00:00": "kein Schluss",
   "15m|SUI|long|2026-10-29 20:45:00": "kein Schluss",
@@ -401,6 +405,7 @@
   "15m|XLM|long|2026-10-30 08:00:00": "Qualitaet unter 3 von 5",
   "15m|XLM|long|2026-10-30 09:15:00": "kein Schluss",
   "15m|XLM|long|2026-10-30 17:45:00": "kein Schluss",
+  "15m|XLM|long|2026-10-30 20:30:00": "Kurs schon zu weit weggelaufen",
   "15m|XLM|short|2026-10-29 13:00:00": "kein Schluss",
   "15m|XLM|short|2026-10-29 13:15:00": "Qualitaet unter 3 von 5",
   "15m|XLM|short|2026-10-29 14:30:00": "Qualitaet unter 3 von 5",
@@ -813,6 +818,7 @@
   "5m|HBAR|short|2026-10-30 12:40:00": "15m-Trend blockt",
   "5m|HBAR|short|2026-10-30 19:25:00": "kein Ziel mit CRV >= 1",
   "5m|HBAR|short|2026-10-30 20:15:00": "kein Schluss",
+  "5m|HBAR|short|2026-10-30 20:50:00": "kein Schluss",
   "5m|INJ|long|2026-10-29 20:05:00": "kein Schluss",
   "5m|INJ|long|2026-10-29 20:45:00": "kein Schluss",
   "5m|INJ|long|2026-10-29 22:05:00": "kein Schluss",
@@ -859,7 +865,7 @@
   "5m|LINK|long|2026-10-30 13:45:00": "kein Schluss",
   "5m|LINK|long|2026-10-30 14:15:00": "kein Schluss",
   "5m|LINK|long|2026-10-30 18:50:00": "Bestaetigung schon zu alt",
-  "5m|LINK|long|2026-10-30 20:30:00": "Qualitaet unter 3 von 5",
+  "5m|LINK|long|2026-10-30 20:30:00": "Kurs schon zu weit weggelaufen",
   "5m|LINK|short|2026-10-29 12:30:00": "kein Schluss",
   "5m|LINK|short|2026-10-29 13:00:00": "kein Schluss",
   "5m|LINK|short|2026-10-29 13:15:00": "kein Schluss",
@@ -1030,6 +1036,8 @@
   "5m|TRX|long|2026-10-30 17:30:00": "kein Schluss",
   "5m|TRX|long|2026-10-30 18:50:00": "kein Schluss",
   "5m|TRX|long|2026-10-30 19:05:00": "kein Schluss",
+  "5m|TRX|long|2026-10-30 20:35:00": "kein Schluss",
+  "5m|TRX|long|2026-10-30 20:45:00": "kein Schluss",
   "5m|TRX|short|2026-10-29 20:45:00": "kein Ziel mit CRV >= 1",
   "5m|TRX|short|2026-10-29 22:00:00": "kein Schluss",
   "5m|TRX|short|2026-10-29 23:45:00": "kein Schluss",
@@ -1161,6 +1169,14 @@
   [
    "long",
    "2026-10-30 20:46:17"
+  ],
+  [
+   "long",
+   "2026-10-30 21:00:27"
+  ],
+  [
+   "long",
+   "2026-10-30 21:00:27"
   ]
  ],
  "__shadow__": {
@@ -1499,6 +1515,19 @@
    "ts": "2026-10-30 18:10:00",
    "v": "15m"
   },
+  "15m|FIL/USDT:USDT|long|2026-10-30 20:55:00": {
+   "entry": 0.86,
+   "fee_r": 0.12247804414906337,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.305483028720638,
+   "side": "long",
+   "sl": 0.851574,
+   "sym": "FIL/USDT:USDT",
+   "tp": 0.871,
+   "ts": "2026-10-30 20:55:00",
+   "v": "15m"
+  },
   "15m|FIL/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 0.913,
    "fee_r": 0.05103647458890387,
@@ -1796,6 +1825,19 @@
    "sym": "WLD/USDT:USDT",
    "tp": 0.4457,
    "ts": "2026-10-26 21:30:00",
+   "v": "15m"
+  },
+  "15m|WLD/USDT:USDT|long|2026-10-30 20:55:00": {
+   "entry": 0.4047,
+   "fee_r": 0.08672684899949086,
+   "r": 0.0,
+   "res": null,
+   "rr": 2.482298000767904,
+   "side": "long",
+   "sl": 0.39910035,
+   "sym": "WLD/USDT:USDT",
+   "tp": 0.4186,
+   "ts": "2026-10-30 20:55:00",
    "v": "15m"
   },
   "15m|WLD/USDT:USDT|short|2026-10-28 20:20:00": {
@@ -2349,7 +2391,9 @@
    "entry": 7.129,
    "fee_r": 0.14355497755590063,
    "r": 0.0,
+   "r30": -0.49594831564376096,
    "res": null,
+   "res30": "T",
    "rr": 1.275328271175059,
    "side": "short",
    "sl": 7.1885924999999995,
@@ -2465,7 +2509,9 @@
    "entry": 55.11,
    "fee_r": 0.13557612472708394,
    "r": 0.0,
+   "r30": -0.23808030177229372,
    "res": null,
+   "res30": "T",
    "rr": 1.066043441270234,
    "side": "short",
    "sl": 55.597784999999995,
@@ -4148,6 +4194,19 @@
    "ts": "2026-10-30 18:10:00",
    "v": "vsbtc"
   },
+  "vsbtc|FIL/USDT:USDT|long|2026-10-30 20:55:00": {
+   "entry": 0.86,
+   "fee_r": 0.12247804414906337,
+   "r": 0.0,
+   "res": null,
+   "rr": 1.305483028720638,
+   "side": "long",
+   "sl": 0.851574,
+   "sym": "FIL/USDT:USDT",
+   "tp": 0.871,
+   "ts": "2026-10-30 20:55:00",
+   "v": "vsbtc"
+  },
   "vsbtc|FIL/USDT:USDT|short|2026-10-28 20:20:00": {
    "entry": 0.913,
    "fee_r": 0.05103647458890387,
@@ -4401,6 +4460,19 @@
    "sym": "WLD/USDT:USDT",
    "tp": 0.4079,
    "ts": "2026-10-30 12:45:00",
+   "v": "vsbtc"
+  },
+  "vsbtc|WLD/USDT:USDT|long|2026-10-30 20:55:00": {
+   "entry": 0.4047,
+   "fee_r": 0.08672684899949086,
+   "r": 0.0,
+   "res": null,
+   "rr": 2.482298000767904,
+   "side": "long",
+   "sl": 0.39910035,
+   "sym": "WLD/USDT:USDT",
+   "tp": 0.4186,
+   "ts": "2026-10-30 20:55:00",
    "v": "vsbtc"
   },
   "vsbtc|WLD/USDT:USDT|short|2026-10-28 20:20:00": {
